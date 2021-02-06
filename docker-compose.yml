@@ -1,0 +1,18 @@
+services:
+  grafana:
+    image: grafana/grafana:7.4.0
+    container_name: jccic-dashboard
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  influxdb:
+    image: quay.io/influxdb/influxdb:v2.0.3
+    container_name: metrics-db
+    ports:
+      - 8086:8086
+
+volumes:
+  grafana-data:
+    external: true
