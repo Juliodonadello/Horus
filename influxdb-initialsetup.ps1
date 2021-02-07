@@ -3,4 +3,5 @@ docker exec metrics-db sh -c "influx bucket create --name cola-cmd --retention 4
 docker exec metrics-db sh -c "influx bucket create --name mensajes-ccic --retention 48h"
 docker exec metrics-db sh -c "influx bucket create --name gpos-rtef --retention 48h"
 docker exec metrics-db sh -c "influx bucket create --name estado-servicio --retention 48h"
+docker exec metrics-db sh -c "influx bucket create --name combustible-generador --retention 48h"
 docker exec metrics-db sh -c "influx user create --name jccic --password ExAmPl3PA55W0rD"
