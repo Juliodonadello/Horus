@@ -12,6 +12,8 @@ services:
     container_name: metrics-db
     ports:
       - 8086:8086
+    volumes:
+      - influxdb-data:/root/.influxdbv2
 
   db:
     image: postgres:13
@@ -33,4 +35,6 @@ services:
 
 volumes:
   grafana-data:
+    external: true
+  influxdb-data:
     external: true
