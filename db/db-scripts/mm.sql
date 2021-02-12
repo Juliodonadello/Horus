@@ -7,7 +7,7 @@ GRANT ALL PRIVILEGES ON DATABASE events TO dashboard;
 \connect "events";
 
 CREATE TABLE IF NOT EXISTS mm_events (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     clasif_seg CHAR(10) NOT NULL,
     precedencia CHAR(10) NOT NULL,
     cifrado BOOLEAN NOT NULL,
@@ -16,3 +16,5 @@ CREATE TABLE IF NOT EXISTS mm_events (
     evento VARCHAR(50) NOT NULL,
     gfh TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+GRANT ALL PRIVILEGES ON TABLE mm_events TO dashboard;
