@@ -3,8 +3,16 @@ package models
 import (
 	"api-horus/api/db"
 	"context"
+	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"time"
+)
+
+var (
+	EstadosValid    = []string{"en servicio", "servicio limitado", "fuera de servicio"}
+	InvalidFacility = errors.New("EstadoServicio Model: Invalid Facility Name")
+	InvalidState    = errors.New("EstadoServicio Model: Invalid State Name")
+	InvalidTime     = errors.New("EstadoServicio Model: Invalid Time Value, out of +- 600 sec range")
 )
 
 type EstadoServicio struct {
@@ -25,4 +33,25 @@ func (e EstadoServicio) Write() (*EstadoServicio, error) {
 		return nil, err
 	}
 	return &e, nil
+}
+
+func (e EstadoServicio) Validate() error {
+	if len(e.Facilidad) <= 0 {
+		return InvalidFacility
+	}
+	var estado string
+	for i := 0; i < len(EstadosValid); i++ {
+		if EstadosValid[i] == e.Estado {
+			estado = e.Estado
+			break
+		}
+	}
+	if len(estado) == 0 {
+		return InvalidState
+	}
+	diffTime := time.Now().Unix() - e.Time
+	if diffTime > 600 || diffTime < -600 {
+		return InvalidTime
+	}
+	return nil
 }
