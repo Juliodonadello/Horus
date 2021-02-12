@@ -30,7 +30,7 @@ services:
     image: adminer:4.7.9
     restart: always
     ports:
-      - 8080:8080
+      - 4000:8080
 
 
 volumes:
