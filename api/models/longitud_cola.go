@@ -3,8 +3,15 @@ package models
 import (
 	"api-horus/api/db"
 	"context"
+	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"time"
+)
+
+var (
+	InvalidFacilityLongitudCola  = errors.New("LongitudCola Model: Invalid Facility Name")
+	InvalidQueueLongLongitudCola = errors.New("LongitudCola Model: Invalid Queue Long value")
+	InvalidTimeLongitudCola      = errors.New("LongitudCola Model: Invalid Time Value, out of +- 600 sec range")
 )
 
 type LongitudCola struct {
@@ -25,4 +32,18 @@ func (e LongitudCola) Write() (*LongitudCola, error) {
 		return nil, err
 	}
 	return &e, nil
+}
+
+func (e LongitudCola) Validate() error {
+	if len(e.Facilidad) <= 0 {
+		return InvalidFacilityLongitudCola
+	}
+	if e.LongCola < 0 {
+		return InvalidQueueLongLongitudCola
+	}
+	diffTime := time.Now().Unix() - e.Time
+	if diffTime > 600 || diffTime < -600 {
+		return InvalidTimeLongitudCola
+	}
+	return nil
 }
