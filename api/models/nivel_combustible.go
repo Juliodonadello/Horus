@@ -5,18 +5,19 @@ import (
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"strings"
 	"time"
 )
 
 var (
-	InvalidFacilityNivelCombustible = errors.New("LongitudCola Model: Invalid Generator Name")
-	InvalidNivelNivelCombustible    = errors.New("LongitudCola Model: Invalid Gas level value")
-	InvalidTimeNivelCombustible     = errors.New("LongitudCola Model: Invalid Time Value, out of +- 600 sec range")
+	InvalidGeneradorNivelCombustible = errors.New("NivelCombustible Model: Invalid Generator Name")
+	InvalidNivelNivelCombustible     = errors.New("NivelCombustible Model: Invalid Gas level value")
+	InvalidTimeNivelCombustible      = errors.New("NivelCombustible Model: Invalid Time Value, out of +- 600 sec range")
 )
 
 type NivelCombustible struct {
-	Generador string  `json:"generador"`
-	Nivel     float32 `json:"nivel"`
+	Generador string  `json:"generador" binding:"required"`
+	Nivel     float32 `json:"nivel" binding:"required"`
 	Time      int64   `json:"timestamp"`
 }
 
@@ -35,8 +36,8 @@ func (e NivelCombustible) Write() (*NivelCombustible, error) {
 }
 
 func (e NivelCombustible) Validate() error {
-	if len(e.Generador) <= 0 {
-		return InvalidFacilityNivelCombustible
+	if strings.TrimSpace(e.Generador) == "" {
+		return InvalidGeneradorNivelCombustible
 	}
 	if e.Nivel < 0.0 {
 		return InvalidNivelNivelCombustible
