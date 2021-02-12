@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"strings"
 	"time"
 )
 
@@ -18,7 +19,7 @@ var (
 type EstadoServicio struct {
 	Facilidad string `json:"facilidad" binding:"required"`
 	Estado    string `json:"estado" binding:"required"`
-	Time      int64  `json:"timestamp" binding:"required"`
+	Time      int64  `json:"timestamp"`
 }
 
 func (e EstadoServicio) Write() (*EstadoServicio, error) {
@@ -36,7 +37,7 @@ func (e EstadoServicio) Write() (*EstadoServicio, error) {
 }
 
 func (e EstadoServicio) Validate() error {
-	if len(e.Facilidad) <= 0 {
+	if strings.TrimSpace(e.Facilidad) == "" {
 		return InvalidFacility
 	}
 	var estado string

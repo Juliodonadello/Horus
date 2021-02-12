@@ -17,7 +17,9 @@ func TestEstadoServicio_Validate(t *testing.T) {
 		fields  fields
 		wantErr bool
 	}{
+		{"Invalid Facility Name Test", fields{"ECR Cdo", "en servicio", time.Now().Unix()}, false},
 		{"Invalid Facility Name Test", fields{"", "en servicio", time.Now().Unix()}, true},
+		{"Invalid Facility Name Test", fields{"    ", "en servicio", time.Now().Unix()}, true},
 		{"Invalid State Name Test", fields{"ECR Cdo", "sin servicio", time.Now().Unix()}, true},
 		{"Invalid Time Value Test", fields{"ECR Cdo", "en servicio", time.Now().Unix() + 650}, true},
 		{"Invalid Time Value Test", fields{"ECR Cdo", "en servicio", time.Now().Unix() - 650}, true},

@@ -14,7 +14,10 @@ func (e EstadoServicioController) Save(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "status": http.StatusBadRequest})
 		return
 	}
-	// Aca validar el contenido de la struct
+	if err := estadoServicioNuevo.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	_, err := estadoServicioNuevo.Write()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
