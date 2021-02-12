@@ -9,12 +9,16 @@ import (
 type LongitudColaController struct{}
 
 func (e LongitudColaController) Save(c *gin.Context) {
-	var tensionGeneradorNuevo models.LongitudCola
-	if err := c.ShouldBindJSON(&tensionGeneradorNuevo); err != nil {
+	var longitudColaNueva models.LongitudCola
+	if err := c.ShouldBindJSON(&longitudColaNueva); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	_, err := tensionGeneradorNuevo.Write()
+	if err := longitudColaNueva.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	_, err := longitudColaNueva.Write()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}

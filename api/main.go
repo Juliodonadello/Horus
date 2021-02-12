@@ -11,7 +11,7 @@ func main() {
 	s := server.Init()
 	err := db.Init()
 	if err != nil {
-		panic("No se pudo iniciar influxdb: %s")
+		panic("No se pudo conectar con Metricas-DB")
 	}
 	_ = s.ListenAndServe() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

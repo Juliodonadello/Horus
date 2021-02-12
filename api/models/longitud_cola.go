@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"strings"
 	"time"
 )
 
@@ -15,8 +16,8 @@ var (
 )
 
 type LongitudCola struct {
-	Facilidad string `json:"facilidad"`
-	LongCola  int    `json:"long_cola"`
+	Facilidad string `json:"facilidad" binding:"required"`
+	LongCola  int    `json:"long_cola" binding:"required"`
 	Time      int64  `json:"timestamp"`
 }
 
@@ -35,7 +36,7 @@ func (e LongitudCola) Write() (*LongitudCola, error) {
 }
 
 func (e LongitudCola) Validate() error {
-	if len(e.Facilidad) <= 0 {
+	if strings.TrimSpace(e.Facilidad) == "" {
 		return InvalidFacilityLongitudCola
 	}
 	if e.LongCola < 0 {
