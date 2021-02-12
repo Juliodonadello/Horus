@@ -1,7 +1,7 @@
 package models
 
 import (
-	"api-horus/api/db"
+	"api-horus/api/tsdb"
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -22,7 +22,7 @@ type NivelCombustible struct {
 }
 
 func (e NivelCombustible) Write() (*NivelCombustible, error) {
-	client := db.GetTSDB()
+	client := tsdb.GetTSDB()
 	writeAPI := (*client).WriteAPIBlocking("ccic", "combustible-generador")
 	p := influxdb2.NewPoint("litros",
 		map[string]string{"generador": e.Generador},

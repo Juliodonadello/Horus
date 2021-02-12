@@ -1,7 +1,7 @@
 package models
 
 import (
-	"api-horus/api/db"
+	"api-horus/api/tsdb"
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -22,7 +22,7 @@ type LongitudCola struct {
 }
 
 func (e LongitudCola) Write() (*LongitudCola, error) {
-	client := db.GetTSDB()
+	client := tsdb.GetTSDB()
 	writeAPI := (*client).WriteAPIBlocking("ccic", "colas-espera")
 	p := influxdb2.NewPoint("long_cola",
 		map[string]string{"facilidad": e.Facilidad},

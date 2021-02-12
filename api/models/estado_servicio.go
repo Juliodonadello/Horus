@@ -1,7 +1,7 @@
 package models
 
 import (
-	"api-horus/api/db"
+	"api-horus/api/tsdb"
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -23,7 +23,7 @@ type EstadoServicio struct {
 }
 
 func (e EstadoServicio) Write() (*EstadoServicio, error) {
-	client := db.GetTSDB()
+	client := tsdb.GetTSDB()
 	writeAPI := (*client).WriteAPIBlocking("ccic", "estado-servicio")
 	p := influxdb2.NewPoint("estado",
 		map[string]string{"facilidad": e.Facilidad},

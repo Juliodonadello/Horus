@@ -1,7 +1,7 @@
 package models
 
 import (
-	"api-horus/api/db"
+	"api-horus/api/tsdb"
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -21,7 +21,7 @@ type TensionGenerador struct {
 }
 
 func (e TensionGenerador) Write() (*TensionGenerador, error) {
-	client := db.GetTSDB()
+	client := tsdb.GetTSDB()
 	writeAPI := (*client).WriteAPIBlocking("ccic", "tension-generador")
 	p := influxdb2.NewPoint("volts",
 		map[string]string{"generador": e.Generador},
