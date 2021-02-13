@@ -23,7 +23,7 @@ var (
 type MensMilEvent struct {
 	ClasifSeg   string `json:"clasificacion" binding:"required"`
 	Precedencia string `json:"precedencia" binding:"required"`
-	Cifrado     bool   `json:"cifrado" binding:"required"`
+	Cifrado     *bool  `json:"cifrado" binding:"required"`
 	Destino     string `json:"destino" binding:"required"`
 	Origen      string `json:"origen" binding:"required"`
 	Evento      string `json:"evento" binding:"required"`
@@ -33,7 +33,7 @@ type MensMilEvent struct {
 func (e MensMilEvent) Write() (*MensMilEvent, error) {
 	client := event_db.GetEventDB()
 	stmt := `INSERT INTO mm_events (clasif_seg, precedencia, cifrado, destino, origen, evento, gfh) VALUES ($1, $2, $3, $4, $5, $6, $7)`
-	_, err := client.Exec(stmt, e.ClasifSeg, e.Precedencia, e.Cifrado, e.Destino, e.Origen, e.Evento, e.Time)
+	_, err := (*client).Exec(stmt, e.ClasifSeg, e.Precedencia, e.Cifrado, e.Destino, e.Origen, e.Evento, time.Unix(e.Time, 0))
 	if err != nil {
 		return nil, err
 	}

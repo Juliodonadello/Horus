@@ -16,14 +16,17 @@ func NewRouter() *gin.Engine {
 			longitudCola := new(controllers.LongitudColaController)
 			nivelCombustible := new(controllers.NivelCombustibleController)
 			tensionGenerador := new(controllers.TensionGeneradorController)
+
 			metricsGroup.POST("estado_servicio", estadoServicio.Save)
 			metricsGroup.POST("longitud-cola", longitudCola.Save)
 			metricsGroup.POST("nivel-combus", nivelCombustible.Save)
 			metricsGroup.POST("nivel-tension", tensionGenerador.Save)
+
 		}
 		eventsGroup := v1.Group("eventos")
 		{
-			eventsGroup.GET("mensajes", Pong)
+			mensMilEvent := new(controllers.MensMilEventController)
+			eventsGroup.POST("mens-mil", mensMilEvent.Save)
 		}
 	}
 	return router
