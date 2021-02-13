@@ -22,11 +22,11 @@ func Init() error {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
-	eventDB, err := sql.Open("postgres", psqlInfo)
+	db, err := sql.Open("postgres", psqlInfo)
+	eventDB = db
 	if err != nil {
 		return connectionError
 	}
-	defer eventDB.Close()
 	return nil
 }
 

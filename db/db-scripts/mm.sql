@@ -18,3 +18,4 @@ CREATE TABLE IF NOT EXISTS mm_events (
 );
 
 GRANT ALL PRIVILEGES ON TABLE mm_events TO dashboard;
+GRANT ALL ON SEQUENCE mm_events_id_seq to dashboard;
