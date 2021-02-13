@@ -8,6 +8,7 @@ GRANT ALL PRIVILEGES ON DATABASE events TO dashboard;
 
 CREATE TABLE IF NOT EXISTS mm_events (
     id SERIAL PRIMARY KEY,
+    nro_mm INT NOT NULL,
     clasif_seg CHAR(10) NOT NULL,
     precedencia CHAR(10) NOT NULL,
     cifrado BOOLEAN NOT NULL,

@@ -17,7 +17,7 @@ var (
 
 type LongitudCola struct {
 	Facilidad string `json:"facilidad" binding:"required"`
-	LongCola  int    `json:"long_cola" binding:"required"`
+	LongCola  *int   `json:"long_cola" binding:"required"`
 	Time      int64  `json:"timestamp"`
 }
 
@@ -26,7 +26,7 @@ func (e LongitudCola) Write() (*LongitudCola, error) {
 	writeAPI := (*client).WriteAPIBlocking("ccic", "colas-espera")
 	p := influxdb2.NewPoint("long_cola",
 		map[string]string{"facilidad": e.Facilidad},
-		map[string]interface{}{"long_cola": e.LongCola},
+		map[string]interface{}{"long_cola": (*e.LongCola)},
 		time.Unix(e.Time, 0))
 	err := writeAPI.WritePoint(context.Background(), p)
 	if err != nil {
@@ -39,7 +39,7 @@ func (e LongitudCola) Validate() error {
 	if strings.TrimSpace(e.Facilidad) == "" {
 		return InvalidFacilityLongitudCola
 	}
-	if e.LongCola < 0 {
+	if (*e.LongCola) < 0 {
 		return InvalidQueueLongLongitudCola
 	}
 	diffTime := time.Now().Unix() - e.Time

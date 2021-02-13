@@ -13,7 +13,7 @@ var (
 	ValidPrecedencia               = []string{"rutina", "prioridad", "inmediato", "flash"}
 	InvalidClasifSegMensMilEvent   = errors.New("MensMilEvent Model: Invalid Clasificacion de Seguridad")
 	InvalidPrecedenciaMensMilEvent = errors.New("MensMilEvent Model: Invalid Precedencia")
-	InvalidCifradoMensMilEvent     = errors.New("MensMilEvent Model: Invalid value for cifrado")
+	InvalidNroMMMensMilEvent       = errors.New("MensMilEvent Model: Invalid value for nro mm")
 	InvalidDestinoMensMilEvent     = errors.New("MensMilEvent Model: Invalid value for destino")
 	InvalidOrigenMensMilEvent      = errors.New("MensMilEvent Model: value for origen")
 	InvalidEventoMensMilEvent      = errors.New("MensMilEvent Model: Invalid value for evento")
@@ -21,6 +21,7 @@ var (
 )
 
 type MensMilEvent struct {
+	NroMM       int    `json:"nro_mm" binding:"required"`
 	ClasifSeg   string `json:"clasificacion" binding:"required"`
 	Precedencia string `json:"precedencia" binding:"required"`
 	Cifrado     *bool  `json:"cifrado" binding:"required"`
@@ -32,8 +33,8 @@ type MensMilEvent struct {
 
 func (e MensMilEvent) Write() (*MensMilEvent, error) {
 	client := event_db.GetEventDB()
-	stmt := `INSERT INTO mm_events (clasif_seg, precedencia, cifrado, destino, origen, evento, gfh) VALUES ($1, $2, $3, $4, $5, $6, $7)`
-	_, err := (*client).Exec(stmt, e.ClasifSeg, e.Precedencia, e.Cifrado, e.Destino, e.Origen, e.Evento, time.Unix(e.Time, 0))
+	stmt := `INSERT INTO mm_events (nro_mm, clasif_seg, precedencia, cifrado, destino, origen, evento, gfh) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+	_, err := (*client).Exec(stmt, e.NroMM, e.ClasifSeg, e.Precedencia, e.Cifrado, e.Destino, e.Origen, e.Evento, time.Unix(e.Time, 0))
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +42,9 @@ func (e MensMilEvent) Write() (*MensMilEvent, error) {
 }
 
 func (e MensMilEvent) Validate() error {
+	if e.NroMM <= 0 {
+		return InvalidNroMMMensMilEvent
+	}
 	if !helpers.ValidString(e.ClasifSeg, ValidClasifSeg) {
 		return InvalidClasifSegMensMilEvent
 	}
@@ -58,7 +62,7 @@ func (e MensMilEvent) Validate() error {
 	}
 	diffTime := time.Now().Unix() - e.Time
 	if diffTime > 600 || diffTime < -600 {
-		return InvalidTime
+		return InvalidTimeMensMilEvent
 	}
 	return nil
 }
