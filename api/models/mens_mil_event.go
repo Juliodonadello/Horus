@@ -66,3 +66,13 @@ func (e MensMilEvent) Validate() error {
 	}
 	return nil
 }
+
+func (e MensMilEvent) Clear() (*MensMilEvent, error) {
+	client := event_db.GetEventDB()
+	stmt := `DELETE FROM mm_events`
+	_, err := (*client).Exec(stmt)
+	if err != nil {
+		return nil, err
+	}
+	return &e, nil
+}

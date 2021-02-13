@@ -24,3 +24,12 @@ func (e MensMilEventController) Save(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
+
+func (e MensMilEventController) ClearRegisters(c *gin.Context) {
+	var MensMilEventNuevo models.MensMilEvent
+	_, err := MensMilEventNuevo.Clear()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+}

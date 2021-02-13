@@ -1,0 +1,1420 @@
+{
+	"info": {
+		"_postman_id": "4947ef08-e92f-4c07-9f96-f94dec176420",
+		"name": "api-horus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "correctas",
+			"item": [
+				{
+					"name": "longitud_cola",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"var\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"var\", 1);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"var\");\r",
+									"\r",
+									"pm.environment.set(\"var\", value+1);\r",
+									"\r",
+									"if(value === 10){\r",
+									"    pm.environment.set(\"var\", 1);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"ECR Cdo\",\r\n    \"long_cola\": 0,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/longitud-cola",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"longitud-cola"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "estado_servicio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"ECR Cdo\",\r\n    \"estado\": \"en servicio\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/estado-servicio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"estado-servicio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_combustible",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"combus\", 1.0);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"pm.environment.set(\"combus\", value+0.5);\r",
+									"\r",
+									"if(value === 10.0){\r",
+									"    pm.environment.set(\"combus\", 1);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"generador 1\",\r\n    \"nivel\": {{combus}},\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-combus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-combus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_tension",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"tension\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"tension\", 220.0);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"tension\");\r",
+									"\r",
+									"pm.environment.set(\"tension\", value+0.5);\r",
+									"\r",
+									"if(value === 230.0){\r",
+									"    pm.environment.set(\"tension\", 220.0);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"generador 1\",\r\n    \"tension\": {{tension}},\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-tension",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-tension"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n    \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": true,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"origen\": \"CMD\",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "incorrectas",
+			"item": [
+				{
+					"name": "estado_servicio invalid facility name",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"    \",\r\n    \"estado\": \"en servicio\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/estado-servicio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"estado-servicio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event Invalid nro_mm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": -1000,\r\n    \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": true,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"origen\": \"CMD\",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event incorrect clasificacion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n    \"clasificacion\": \"tero\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": true,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"origen\": \"CMD\",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event invalid evento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n    \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": true,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"Origen\": \"CMD\",\r\n    \"Evento\": \" \",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event invalid origen",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n    \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": true,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"origen\": \" \",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event invalid destino",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n    \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": true,\r\n    \"destino\": \" \",\r\n    \"origen\": \"CMD\",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"invalid_time\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"invalid_time\", Date.now() + 650);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"invalid_time\");\r",
+									"\r",
+									"pm.environment.set(\"invalid_time\", Date.now() + 650);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n    \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": true,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"origen\": \"CMD\",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{invalid_time}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event incorrect cifrado field",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n    \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"rutina\",\r\n    \"cifrado\": truse,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"origen\": \"CMD\",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mens_Mil_Event incorrect precedencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nro_mm\": 1000,\r\n   \"clasificacion\": \"publico\",\r\n    \"precedencia\": \"pato\",\r\n    \"cifrado\": true,\r\n    \"destino\": \"ECR Cdo Op\",\r\n    \"origen\": \"CMD\",\r\n    \"Evento\": \"RECIBIDO\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/eventos/mens-mil",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"eventos",
+								"mens-mil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "estado_servicio invalid state",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"ECR Cdo\",\r\n    \"estado\": \"casi servicio\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/estado-servicio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"estado-servicio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "estado_servicio incorrect json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"ECR Cdo\",\r\n    \"estado\": \"en servicio\",\r\n    \"timestamp\": {{$timestamp}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/estado-servicio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"estado-servicio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "estado_servicio invalid json request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"estado\": \"en servicio\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/estado-servicio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"estado-servicio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "estado_servicio invalid json request 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"ECR Cdo\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/estado-servicio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"estado-servicio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "longitud_cola invalid long",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"ECR Cdo\",\r\n    \"long_cola\": -1,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/longitud-cola",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"longitud-cola"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "longitud_cola empty facility",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"   \",\r\n    \"long_cola\": 20,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/longitud-cola",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"longitud-cola"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "longitud_cola invalid json incomplete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"long_cola\": 20,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/longitud-cola",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"longitud-cola"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "longitud_cola invalid json incomplete 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilidad\":\"ECR Cdo\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/longitud-cola",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"longitud-cola"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_combustible zero lenght generator name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"combus\", 1.0);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"pm.environment.set(\"combus\", value+0.5);\r",
+									"\r",
+									"if(value === 10.0){\r",
+									"    pm.environment.set(\"combus\", 1);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"\",\r\n    \"nivel\": {{combus}},\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-combus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-combus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_combustible empty string generator name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"combus\", 1.0);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"pm.environment.set(\"combus\", value+0.5);\r",
+									"\r",
+									"if(value === 10.0){\r",
+									"    pm.environment.set(\"combus\", 1);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\" \",\r\n    \"nivel\": {{combus}},\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-combus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-combus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_combustible negative float gas level",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"generador 1\",\r\n    \"nivel\": -10.0,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-combus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-combus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_combustible invalid time",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"invalid_time\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"invalid_time\", Date.now() + 650);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"invalid_time\");\r",
+									"\r",
+									"pm.environment.set(\"invalid_time\", Date.now() + 650);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"generador 1\",\r\n    \"nivel\": 10.0,\r\n    \"timestamp\": {{invalid_time}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-combus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-combus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_tension invalid generator name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"combus\", 1.0);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"pm.environment.set(\"combus\", value+0.5);\r",
+									"\r",
+									"if(value === 10.0){\r",
+									"    pm.environment.set(\"combus\", 1);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"\",\r\n    \"tension\": 220.0,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-tension",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-tension"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_tension invalid tension value 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"if( !value) {\r",
+									"    pm.environment.set(\"combus\", 1.0);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var value = pm.environment.get(\"combus\");\r",
+									"\r",
+									"pm.environment.set(\"combus\", value+0.5);\r",
+									"\r",
+									"if(value === 10.0){\r",
+									"    pm.environment.set(\"combus\", 1);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"generador 1\",\r\n    \"tension\": -10.0,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-tension",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-tension"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_tension invalid tension value 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"generador 1\",\r\n    \"tension\": 550.0,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-tension",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-tension"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_tension invalid tension incomplete request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tension\": 550.0,\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-tension",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-tension"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nivel_tension invalid tension incomplete request 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generador\":\"generador 1\",\r\n    \"timestamp\": {{$timestamp}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/metricas/nivel-tension",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"metricas",
+								"nivel-tension"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "http://localhost:8080/ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

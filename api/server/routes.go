@@ -27,6 +27,7 @@ func NewRouter() *gin.Engine {
 		{
 			mensMilEvent := new(controllers.MensMilEventController)
 			eventsGroup.POST("mens-mil", mensMilEvent.Save)
+			eventsGroup.DELETE("mens-mil", mensMilEvent.ClearRegisters)
 		}
 	}
 	return router
