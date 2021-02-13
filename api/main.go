@@ -1,14 +1,16 @@
 package main
 
 import (
-	"api-horus/api/event_db"
-	"api-horus/api/server"
-	"api-horus/api/tsdb"
+	"api/event_db"
+	"api/server"
+	"api/tsdb"
+	"time"
 )
 
 // https://gin-gonic.com/docs/examples/custom-http-config/
 // https://github.com/vsouza/go-gin-boilerplate
 func main() {
+	time.Sleep(10 * time.Second)
 	s := server.Init()
 	err := tsdb.Init()
 	if err != nil {

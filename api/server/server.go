@@ -8,7 +8,7 @@ import (
 func Init() *http.Server {
 	router := NewRouter()
 	server := &http.Server{
-		Addr:           ":8080",
+		Addr:           ":5000",
 		Handler:        router,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,

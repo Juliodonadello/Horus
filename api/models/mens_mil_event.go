@@ -1,8 +1,8 @@
 package models
 
 import (
-	"api-horus/api/event_db"
-	"api-horus/api/helpers"
+	"api/event_db"
+	"api/helpers"
 	"errors"
 	"strings"
 	"time"

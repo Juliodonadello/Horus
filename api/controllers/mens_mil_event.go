@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"api-horus/api/models"
+	"api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

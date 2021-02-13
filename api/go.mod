@@ -1,4 +1,4 @@
-module api-horus
+module api
 
 go 1.15
 

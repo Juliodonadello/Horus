@@ -1,7 +1,7 @@
 package server
 
 import "github.com/gin-gonic/gin"
-import "api-horus/api/controllers"
+import "api/controllers"
 
 func NewRouter() *gin.Engine {
 	router := gin.Default()

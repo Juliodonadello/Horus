@@ -1,7 +1,7 @@
 package models
 
 import (
-	"api-horus/api/tsdb"
+	"api/tsdb"
 	"context"
 	"errors"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
