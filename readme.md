@@ -12,5 +12,6 @@ Sistema de monitorización de KPI de los CCIC del EA.
 ```bash
 git clone https://proyecto-horus-admin@bitbucket.org/proyecto-horus/horus-jccic-principal.git
 docker volume create --name=grafana-data
+docker network create --subnet 10.20.0.0/24 horus-ccic
 docker-compose up --build
 ```

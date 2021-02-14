@@ -1,15 +1,21 @@
-FROM golang:1.15
+ARG GO_VERSION=1.15
 
-# Creo una carpeta para mi codigo y lo copio en ella
-WORKDIR /go/src/api
-COPY . .
+FROM golang:${GO_VERSION}-alpine AS builder
 
-# Obtengo las dependencias de mi API y las Instalo
-RUN go get -d -v ./...
-RUN go install -v ./...
 
+WORKDIR /src
+COPY ./go.mod ./go.sum ./
+RUN go mod download
+
+COPY ./ ./
+RUN CGO_ENABLED=0 go build \
+    -installsuffix 'static' \
+    -o /app .
+
+FROM scratch AS final
 # Compilo mi imagen
-RUN go build .
+COPY --from=builder /app /app
+EXPOSE 5000
 
 # Configuro que programa inicia el contenedor cuando arranca
-ENTRYPOINT ["/go/bin/api"]
+ENTRYPOINT ["/app"]

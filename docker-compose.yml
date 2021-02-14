@@ -40,7 +40,10 @@ services:
     env_file:
       - horus-api.env
 
-
+networks:
+  default:
+    external:
+      name: horus-ccic
 
 volumes:
   grafana-data:
