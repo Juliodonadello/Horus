@@ -1,4 +1,4 @@
-package tsdb
+package metrics_db
 
 import (
 	"context"

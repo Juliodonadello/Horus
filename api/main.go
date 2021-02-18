@@ -2,8 +2,8 @@ package main
 
 import (
 	"api/event_db"
+	"api/metrics_db"
 	"api/server"
-	"api/tsdb"
 	"time"
 )
 
@@ -12,7 +12,7 @@ import (
 func main() {
 	time.Sleep(10 * time.Second)
 	s := server.Init()
-	err := tsdb.Init()
+	err := metrics_db.Init()
 	if err != nil {
 		panic("No se pudo conectar con Metricas-DB")
 	}

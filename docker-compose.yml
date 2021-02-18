@@ -12,11 +12,13 @@ services:
     build: ./tsdb
     restart: always
     container_name: metrics-db
+    ports:
+      - 8086:8086
     volumes:
-      - ./tsdb/config.yml:/config.yml
+      - ./metrics_db/config.yml:/config.yml
 
   db:
-    image: postgres:13
+    image: postgres:12
     restart: always
     container_name: events-db
     environment:
@@ -38,7 +40,7 @@ services:
     ports:
       - 8080:5000
     env_file:
-      - horus-api.env
+      - api/horus-api.env
 
 networks:
   default:
