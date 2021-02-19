@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"api-horus/api/models"
+	"api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -19,6 +19,15 @@ func (e MensMilEventController) Save(c *gin.Context) {
 		return
 	}
 	_, err := MensMilEventNuevo.Write()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+}
+
+func (e MensMilEventController) ClearRegisters(c *gin.Context) {
+	var MensMilEventNuevo models.MensMilEvent
+	_, err := MensMilEventNuevo.Clear()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}

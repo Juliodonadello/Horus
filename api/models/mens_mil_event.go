@@ -1,8 +1,8 @@
 package models
 
 import (
-	"api-horus/api/event_db"
-	"api-horus/api/helpers"
+	"api/event_db"
+	"api/helpers"
 	"errors"
 	"strings"
 	"time"
@@ -65,4 +65,14 @@ func (e MensMilEvent) Validate() error {
 		return InvalidTimeMensMilEvent
 	}
 	return nil
+}
+
+func (e MensMilEvent) Clear() (*MensMilEvent, error) {
+	client := event_db.GetEventDB()
+	stmt := `DELETE FROM mm_events`
+	_, err := (*client).Exec(stmt)
+	if err != nil {
+		return nil, err
+	}
+	return &e, nil
 }
