@@ -1,40 +1,57 @@
 services:
   dashboard:
     image: grafana/grafana:7.4.0
-    container_name: jccic-dashboard
+    container_name: dashboard
+    restart: always
     ports:
       - 3000:3000
-    #volumes:
-    #  - grafana-data:/var/lib/grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./dashboard/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./dashboard/dashboard.env
+
 
   tsdb:
     build: ./tsdb
+    restart: always
     container_name: metrics-db
     ports:
       - 8086:8086
-    #volumes:
-    #  - influxdb-data:/root/.influxdbv2
+    volumes:
+      - ./tsdb/config.yml:/config.yml
 
   db:
-    image: postgres:13
+    image: postgres:12
     restart: always
     container_name: events-db
     environment:
       POSTGRES_PASSWORD: ccicevents
     volumes:
       - ./db/db-scripts:/docker-entrypoint-initdb.d
-    ports:
-      - 5432:5432
 
   adminer:
     image: adminer:4.7.9
+    container_name: adminer-aux
     restart: always
     ports:
       - 4000:8080
 
+  horus-api:
+    build: ./api
+    container_name: api-horus
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    env_file:
+      - api/horus-api.env
 
-#volumes:
-#  grafana-data:
-#    external: true
-#  influxdb-data:
-#    external: true
+networks:
+  default:
+    external:
+      name: horus-ccic
+
+volumes:
+  grafana-data:
+   external: true

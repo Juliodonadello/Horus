@@ -1,0 +1,32 @@
+apiVersion: 1
+
+deleteDatasources:
+  - name: metrics-db
+
+datasources:
+  - name: metrics-db
+    type: influxdb
+    access: proxy
+    url: http://metrics-db:8086
+    user: dashboard
+    password: ExAmPl3PA55W0rD
+    secureJsonData:
+      token: u8C0TQ4SOAQ6za2BLZO-grxyIg5NT-WEQGNE9O6pYy73rPt9t0MNx8trbAgXEdyrwXYQ9dCRs5-zr3BMeeVufw==
+    jsonData:
+      version: Flux
+      organization: ccic
+      tlsSkipVerify: true
+    editable: true
+
+  - name: events-db
+    type: postgres
+    url: events-db:5432
+    database: events
+    user: dashboard
+    secureJsonData:
+      password: dashboard
+    jsonData:
+      sslmode: "disable" # disable/require/verify-ca/verify-full
+      postgresVersion: 1200 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
+      timescaledb: false
+    editable: true
