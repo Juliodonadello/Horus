@@ -4,6 +4,7 @@ import (
 	"api/event_db"
 	"api/metrics_db"
 	"api/server"
+	"fmt"
 	"time"
 )
 
@@ -11,7 +12,10 @@ import (
 // https://github.com/vsouza/go-gin-boilerplate
 func main() {
 	time.Sleep(10 * time.Second)
-	s := server.Init()
+	currentTime := time.Now()
+	fmt.Println("Current Time in String: ", currentTime.String())
+	httpsRouter := server.NewRouter()
+	httpRouter := server.NewRouter()
 	err := metrics_db.Init()
 	if err != nil {
 		panic("No se pudo conectar con Metricas-DB")
@@ -20,5 +24,6 @@ func main() {
 	if err != nil {
 		panic("No se pudo conectar con Event-DB")
 	}
-	_ = s.ListenAndServe() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	go httpRouter.Run(":80")
+	httpsRouter.RunTLS(":443", "localhost.crt", "localhost.key")
 }

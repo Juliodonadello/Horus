@@ -1,6 +1,6 @@
 ARG GO_VERSION=1.15
 
-FROM golang:${GO_VERSION}-alpine AS builder
+FROM golang:${GO_VERSION} AS builder
 
 
 WORKDIR /src
@@ -15,7 +15,8 @@ RUN CGO_ENABLED=0 go build \
 FROM scratch AS final
 # Compilo mi imagen
 COPY --from=builder /app /app
-EXPOSE 5000
-
+COPY ./certs ./
+EXPOSE 443
+EXPOSE 80
 # Configuro que programa inicia el contenedor cuando arranca
 ENTRYPOINT ["/app"]
