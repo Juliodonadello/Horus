@@ -47,6 +47,11 @@ func NewRouter() *gin.Engine {
 			eventsGroup.POST("mens-mil", mensMilEvent.Save)
 			eventsGroup.DELETE("mens-mil", mensMilEvent.ClearRegisters)
 		}
+		tokenGroup := v1.Group("token")
+		{
+			deviceToken := new(controllers.DeviceTokenController)
+			tokenGroup.GET("generate", deviceToken.GetToken)
+		}
 	}
 	return router
 }
