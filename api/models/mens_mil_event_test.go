@@ -8,6 +8,7 @@ import (
 
 func TestMensMilEvent_Validate(t *testing.T) {
 	type fields struct {
+		NroMM       int
 		ClasifSeg   string
 		Precedencia string
 		Cifrado     bool
@@ -21,19 +22,20 @@ func TestMensMilEvent_Validate(t *testing.T) {
 		fields  fields
 		wantErr bool
 	}{
-		{"Valid Test", fields{"secreto", "rutina", true, "ECR Cdo", "CMD", "sale", time.Now().Unix()}, false},
-		{"Invalid Clasif Seg Test", fields{"rutinario", "rutina", true, "ECR Cdo", "CMD", "sale", time.Now().Unix()}, true},
-		{"Invalid Precedencia Test", fields{"publico", "secreto", true, "ECR Cdo", "CMD", "sale", time.Now().Unix()}, true},
-		{"Invalid Origen Test", fields{"rutinario", "rutina", false, "ECR Cdo", "", "sale", time.Now().Unix()}, true},
-		{"Invalid Destino Test", fields{"rutinario", "rutina", false, "  ", "CMD", "sale", time.Now().Unix()}, true},
-		{"Invalid Evento Test", fields{"secreto", "rutina", true, "ECR Cdo", "CMD", "", time.Now().Unix()}, true},
+		{"Valid Test", fields{1, "secreto", "rutina", true, "ECR Cdo", "CMD", "sale", time.Now().Unix()}, false},
+		{"Invalid Clasif Seg Test", fields{1, "rutinario", "rutina", true, "ECR Cdo", "CMD", "sale", time.Now().Unix()}, true},
+		{"Invalid Precedencia Test", fields{1, "publico", "secreto", true, "ECR Cdo", "CMD", "sale", time.Now().Unix()}, true},
+		{"Invalid Origen Test", fields{1, "rutinario", "rutina", false, "ECR Cdo", "", "sale", time.Now().Unix()}, true},
+		{"Invalid Destino Test", fields{1, "rutinario", "rutina", false, "  ", "CMD", "sale", time.Now().Unix()}, true},
+		{"Invalid Evento Test", fields{1, "secreto", "rutina", true, "ECR Cdo", "CMD", "", time.Now().Unix()}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			e := MensMilEvent{
+				NroMM:       tt.fields.NroMM,
 				ClasifSeg:   tt.fields.ClasifSeg,
 				Precedencia: tt.fields.Precedencia,
-				Cifrado:     tt.fields.Cifrado,
+				Cifrado:     &tt.fields.Cifrado,
 				Destino:     tt.fields.Destino,
 				Origen:      tt.fields.Origen,
 				Evento:      tt.fields.Evento,
@@ -48,6 +50,7 @@ func TestMensMilEvent_Validate(t *testing.T) {
 
 func TestMensMilEvent_Write(t *testing.T) {
 	type fields struct {
+		NroMM       int
 		ClasifSeg   string
 		Precedencia string
 		Cifrado     bool
@@ -67,9 +70,10 @@ func TestMensMilEvent_Write(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			e := MensMilEvent{
+				NroMM:       tt.fields.NroMM,
 				ClasifSeg:   tt.fields.ClasifSeg,
 				Precedencia: tt.fields.Precedencia,
-				Cifrado:     tt.fields.Cifrado,
+				Cifrado:     &tt.fields.Cifrado,
 				Destino:     tt.fields.Destino,
 				Origen:      tt.fields.Origen,
 				Evento:      tt.fields.Evento,

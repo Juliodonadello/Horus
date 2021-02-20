@@ -25,7 +25,7 @@ func TestLongitudCola_Validate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			e := LongitudCola{
 				Facilidad: tt.fields.Facilidad,
-				LongCola:  tt.fields.LongCola,
+				LongCola:  &tt.fields.LongCola,
 				Time:      tt.fields.Time,
 			}
 			if err := e.Validate(); (err != nil) != tt.wantErr {
@@ -53,7 +53,7 @@ func TestLongitudCola_Write(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			e := LongitudCola{
 				Facilidad: tt.fields.Facilidad,
-				LongCola:  tt.fields.LongCola,
+				LongCola:  &tt.fields.LongCola,
 				Time:      tt.fields.Time,
 			}
 			got, err := e.Write()
