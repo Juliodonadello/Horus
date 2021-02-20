@@ -24,7 +24,7 @@ datasources:
     database: events
     user: dashboard
     secureJsonData:
-      password: dashboard
+      password: mDZrO1XKudNeTUq0MPuE
     jsonData:
       sslmode: "disable" # disable/require/verify-ca/verify-full
       postgresVersion: 1200 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10

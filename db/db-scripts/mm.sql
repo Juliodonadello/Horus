@@ -24,3 +24,4 @@ CREATE TABLE IF NOT EXISTS mm_events (
 
 GRANT ALL PRIVILEGES ON TABLE mm_events TO events_api;
 GRANT ALL ON SEQUENCE mm_events_id_seq to events_api;
+GRANT SELECT ON TABLE mm_events TO dashboard;
