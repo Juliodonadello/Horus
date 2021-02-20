@@ -10,8 +10,12 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - ./dashboard/provisioning/:/etc/grafana/provisioning/
+      - ./dashboard/horus_dashboard.ini:/etc/grafana/horus_dashboard.ini
     env_file:
       - ./dashboard/dashboard.env
+    depends_on:
+      - tsdb
+      - db
 
 
   tsdb:
@@ -48,6 +52,9 @@ services:
       - 80:80
     env_file:
       - api/horus-api.env
+    depends_on:
+      - tsdb
+      - db
 
 networks:
   default:

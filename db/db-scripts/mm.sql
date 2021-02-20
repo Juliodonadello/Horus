@@ -1,8 +1,12 @@
-CREATE USER dashboard WITH PASSWORD 'dashboard';
+CREATE USER events_api WITH PASSWORD 'ooMuUa44xBsiLcbicTX8';
+CREATE USER dashboard WITH PASSWORD  'mDZrO1XKudNeTUq0MPuE';
 
+CREATE DATABASE grafana;
 CREATE DATABASE events;
 
-GRANT ALL PRIVILEGES ON DATABASE events TO dashboard;
+GRANT ALL PRIVILEGES ON DATABASE events TO events_api;
+GRANT ALL PRIVILEGES ON DATABASE grafana TO dashboard;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO dashboard;
 
 \connect "events";
 
@@ -18,5 +22,5 @@ CREATE TABLE IF NOT EXISTS mm_events (
     gfh TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-GRANT ALL PRIVILEGES ON TABLE mm_events TO dashboard;
-GRANT ALL ON SEQUENCE mm_events_id_seq to dashboard;
+GRANT ALL PRIVILEGES ON TABLE mm_events TO events_api;
+GRANT ALL ON SEQUENCE mm_events_id_seq to events_api;
