@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/conf_db"
 	"api/event_db"
 	"api/metrics_db"
 	"api/server"
@@ -23,6 +24,10 @@ func main() {
 	err = event_db.Init()
 	if err != nil {
 		panic("No se pudo conectar con Event-DB")
+	}
+	err = conf_db.Init()
+	if err != nil {
+		panic("No se pudo conectar con Config DB")
 	}
 	go httpRouter.Run(":80")
 	httpsRouter.RunTLS(":443", "localhost.crt", "localhost.key")

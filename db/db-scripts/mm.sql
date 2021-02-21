@@ -1,11 +1,14 @@
-CREATE USER events_api WITH PASSWORD 'ooMuUa44xBsiLcbicTX8';
+CREATE USER api_events WITH PASSWORD 'ooMuUa44xBsiLcbicTX8';
 CREATE USER dashboard WITH PASSWORD  'mDZrO1XKudNeTUq0MPuE';
+CREATE USER api_conf WITH PASSWORD '724KR24H7MXFBczNrhgD';
 
 CREATE DATABASE grafana;
 CREATE DATABASE events;
+CREATE DATABASE api_horus;
 
-GRANT ALL PRIVILEGES ON DATABASE events TO events_api;
+GRANT ALL PRIVILEGES ON DATABASE events TO api_events;
 GRANT ALL PRIVILEGES ON DATABASE grafana TO dashboard;
+GRANT ALL PRIVILEGES ON DATABASE api_horus to api_conf;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO dashboard;
 
 \connect "events";
@@ -21,7 +24,17 @@ CREATE TABLE IF NOT EXISTS mm_events (
     evento VARCHAR(50) NOT NULL,
     gfh TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
-GRANT ALL PRIVILEGES ON TABLE mm_events TO events_api;
-GRANT ALL ON SEQUENCE mm_events_id_seq to events_api;
+GRANT ALL PRIVILEGES ON TABLE mm_events TO api_events;
+GRANT ALL ON SEQUENCE mm_events_id_seq to api_events;
 GRANT SELECT ON TABLE mm_events TO dashboard;
+
+\connect "api_horus";
+CREATE TABLE IF NOT EXISTS device_tokens (
+    id SERIAL PRIMARY KEY,
+    token CHAR(32) NOT NULL,
+    device VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL
+);
+GRANT ALL PRIVILEGES ON TABLE device_tokens TO api_conf;
+GRANT ALL ON SEQUENCE device_tokens_id_seq to api_conf;
