@@ -27,10 +27,10 @@ var (
 )
 
 type DeviceToken struct {
-	Device    string    `json:"device"`
-	Token     string    `json:"token"`
-	CreatedAt time.Time `json:"created_at"`
-	ExpiresAt time.Time `json:"expires_at"`
+	Device    string    `json:"device" db:"device"`
+	Token     string    `json:"token" db:"token"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	ExpiresAt time.Time `json:"expires_at" db:"expires_at"`
 }
 
 func (e *DeviceToken) Create(device string) {
@@ -88,4 +88,31 @@ func generateSecureToken(length int) string {
 		return ""
 	}
 	return hex.EncodeToString(b)
+}
+
+func RecoverTokens() (int, error) {
+	client := conf_db.GetConfDB()
+	var cont int
+	stmt := `SELECT device,token,created_at,expires_at FROM device_tokens;`
+	rows, err := (*client).Queryx(stmt)
+	if err != nil {
+		return cont, err
+	}
+	for rows.Next() {
+		var token DeviceToken
+		err := rows.StructScan(&token)
+		cont++
+		if err != nil {
+			return cont, err
+		}
+		err = token.Validate()
+		if err != nil {
+			cont--
+			fmt.Println("Se eliminó token inválido")
+			continue
+		}
+		TokenCache[token.Token] = &token
+		DeviceCache[token.Device] = &token
+	}
+	return cont, nil
 }

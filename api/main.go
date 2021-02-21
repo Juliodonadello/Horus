@@ -1,9 +1,9 @@
 package main
 
 import (
-	"api/conf_db"
 	"api/event_db"
 	"api/metrics_db"
+	"api/models"
 	"api/server"
 	"fmt"
 	"time"
@@ -25,9 +25,10 @@ func main() {
 	if err != nil {
 		panic("No se pudo conectar con Event-DB")
 	}
-	err = conf_db.Init()
+	tokens, err := models.RecoverTokens()
+	fmt.Println(fmt.Sprintf("Se recuperaron %d tokens", tokens))
 	if err != nil {
-		panic("No se pudo conectar con Config DB")
+		panic("No se pudo recuperar los tokens")
 	}
 	go httpRouter.Run(":80")
 	httpsRouter.RunTLS(":443", "localhost.crt", "localhost.key")
