@@ -1,6 +1,7 @@
 package server
 
 import (
+	"api/middleware"
 	"github.com/gin-contrib/secure"
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +29,9 @@ func NewRouter() *gin.Engine {
 	router.GET("/ping", Pong)
 	v1 := router.Group("v1")
 	{
+
 		metricsGroup := v1.Group("metricas")
+		metricsGroup.Use(middleware.TokenDeviceAuth())
 		{
 			estadoServicio := new(controllers.EstadoServicioController)
 			longitudCola := new(controllers.LongitudColaController)
@@ -42,6 +45,7 @@ func NewRouter() *gin.Engine {
 
 		}
 		eventsGroup := v1.Group("eventos")
+		eventsGroup.Use(middleware.TokenDeviceAuth())
 		{
 			mensMilEvent := new(controllers.MensMilEventController)
 			eventsGroup.POST("mens-mil", mensMilEvent.Save)
