@@ -21,7 +21,7 @@ type DeviceTokenController struct{}
 type LoginData struct {
 	Username string `form:"user" binding:"required"`
 	Password string `form:"pass" binding:"required"`
-	Device   string `form:"device" binding:"required"`
+	Device   string `form:"device"`
 }
 
 func (d DeviceTokenController) GetToken(c *gin.Context) {
@@ -91,6 +91,33 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 			}
 		}
 		c.JSON(http.StatusOK, gin.H{"device": oldToken.Device, "token": oldToken.Token})
+	}
+}
+
+func (d DeviceTokenController) ListTokens(c *gin.Context) {
+	var loginData LoginData
+	err := c.BindQuery(&loginData)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "status": http.StatusBadRequest})
+		return
+	}
+	isAdmin, err := userIsAdmin(loginData)
+	if isAdmin {
+		authorizedDevices := make(map[string]string)
+		for k, v := range models.DeviceCache {
+			authorizedDevices[k] = v.Token
+		}
+		jsonString, err := json.Marshal(authorizedDevices)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
+			return
+		}
+		c.Writer.Header().Set("Content-Type", "application/json")
+		_, err = c.Writer.Write(jsonString)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
+			return
+		}
 	}
 }
 

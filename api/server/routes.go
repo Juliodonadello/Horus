@@ -56,6 +56,7 @@ func NewRouter() *gin.Engine {
 			deviceToken := new(controllers.DeviceTokenController)
 			tokenGroup.GET("generate", deviceToken.GetToken)
 			tokenGroup.DELETE("revoke", deviceToken.RevokeToken)
+			tokenGroup.GET("list", deviceToken.ListTokens)
 		}
 	}
 	return router
