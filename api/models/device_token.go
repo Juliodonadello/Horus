@@ -53,6 +53,44 @@ func (e DeviceToken) Write() error {
 	return nil
 }
 
+func FindByToken(token string) (*DeviceToken, error) {
+	client := conf_db.GetConfDB()
+	stmt := `SELECT device,token,created_at,expires_at FROM device_tokens WHERE token = $1;`
+	var oldToken DeviceToken
+	err := (*client).QueryRowx(stmt, token).StructScan(&oldToken)
+	if err != nil {
+		return nil, err
+	}
+	delete(TokenCache, oldToken.Token)
+	delete(DeviceCache, oldToken.Device)
+	return &oldToken, nil
+}
+
+func FindByDevice(device string) (*DeviceToken, error) {
+	client := conf_db.GetConfDB()
+	stmt := `SELECT device,token,created_at,expires_at FROM device_tokens WHERE device = $1;`
+	var oldToken DeviceToken
+	err := (*client).QueryRowx(stmt, device).StructScan(&oldToken)
+	if err != nil {
+		return nil, err
+	}
+	delete(TokenCache, oldToken.Token)
+	delete(DeviceCache, oldToken.Device)
+	return &oldToken, nil
+}
+
+func (e *DeviceToken) Delete() error {
+	client := conf_db.GetConfDB()
+	stmt := `DELETE FROM device_tokens WHERE token = $1;`
+	_, err := (*client).Exec(stmt, e.Token)
+	if err != nil {
+		return err
+	}
+	delete(TokenCache, e.Token)
+	delete(DeviceCache, e.Device)
+	return nil
+}
+
 func (e DeviceToken) Validate() error {
 	if strings.TrimSpace(e.Device) == "" || len(e.Device) > 50 {
 		fmt.Println(e.Device)
