@@ -11,6 +11,8 @@ services:
       - grafana-data:/var/lib/grafana
       - ./dashboard/provisioning/:/etc/grafana/provisioning/
       - ./dashboard/horus_dashboard.ini:/etc/grafana/horus_dashboard.ini
+      - ./dashboard/cert.pem:/etc/grafana/cert.pem
+      - ./dashboard/key.pem:/etc/grafana/key.pem
     env_file:
       - ./dashboard/dashboard.env
     depends_on:
