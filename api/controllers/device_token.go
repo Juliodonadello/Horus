@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"api/models"
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -12,8 +13,9 @@ import (
 )
 
 var (
-	grafanaHost = os.Getenv("GRAFANA_HOST")
-	grafanaPort = os.Getenv("GRAFANA_PORT")
+	grafanaHost         = os.Getenv("GRAFANA_HOST")
+	grafanaPort         = os.Getenv("GRAFANA_PORT")
+	externalAuthProblem = errors.New("DeviceTokenController: Can't reach dashboard user API")
 )
 
 type DeviceTokenController struct{}
@@ -44,8 +46,12 @@ func (d DeviceTokenController) GetToken(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
 			return
 		}
+		c.JSON(http.StatusOK, gin.H{"device": newToken.Device, "token": newToken.Token})
+		return
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized})
 	}
-	c.JSON(http.StatusOK, gin.H{"device": newToken.Device, "token": newToken.Token})
+	c.JSON(http.StatusInternalServerError, gin.H{"error": externalAuthProblem.Error(), "status": http.StatusInternalServerError})
 	return
 }
 
@@ -68,10 +74,6 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 		}
 		if token == "" {
 			oldToken = models.FindByDevice(device)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
-				return
-			}
 			err = oldToken.Delete()
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
@@ -79,10 +81,6 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 			}
 		} else {
 			oldToken = models.FindByToken(token)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
-				return
-			}
 			err = oldToken.Delete()
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
@@ -90,6 +88,8 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 			}
 		}
 		c.JSON(http.StatusOK, gin.H{"device": oldToken.Device, "token": oldToken.Token})
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized})
 	}
 }
 
@@ -121,7 +121,8 @@ func (d DeviceTokenController) ListTokens(c *gin.Context) {
 }
 
 func userIsAdmin(loginData LoginData) (bool, error) {
-	url := fmt.Sprintf("http://%s:%s@%s:%s/api/user", loginData.Username, loginData.Password, grafanaHost, grafanaPort)
+	url := fmt.Sprintf("https://%s:%s@%s:%s/api/user", loginData.Username, loginData.Password, grafanaHost, grafanaPort)
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	resp, err := http.Get(url)
 	if err != nil {
 		//c.JSON(http.StatusServiceUnavailable, gin.H{"error": err.Error(), "status": http.StatusServiceUnavailable})
