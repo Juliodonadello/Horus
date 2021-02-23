@@ -5,7 +5,6 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -33,14 +32,17 @@ type DeviceToken struct {
 	ExpiresAt time.Time `json:"expires_at" db:"expires_at"`
 }
 
-func (e *DeviceToken) Create(device string) {
+// Create gets a device name and fills struct fields with a random token, the time and the time that the token expires
+func (e *DeviceToken) Create(device string) error {
 	e.Token = generateSecureToken(tokenLength)
 	e.Device = device
 	actualTime := time.Now()
 	e.CreatedAt = actualTime
 	e.ExpiresAt = actualTime.AddDate(0, 0, tokenDurationDays)
+	return e.Validate()
 }
 
+// Write saves the token to the database and an in memory cache maps.
 func (e DeviceToken) Write() error {
 	client := conf_db.GetConfDB()
 	stmt := `INSERT INTO device_tokens (token, device, created_at,expires_at) VALUES ($1, $2, $3, $4);`
@@ -53,32 +55,35 @@ func (e DeviceToken) Write() error {
 	return nil
 }
 
-func FindByToken(token string) (*DeviceToken, error) {
-	client := conf_db.GetConfDB()
-	stmt := `SELECT device,token,created_at,expires_at FROM device_tokens WHERE token = $1;`
-	var oldToken DeviceToken
-	err := (*client).QueryRowx(stmt, token).StructScan(&oldToken)
-	if err != nil {
-		return nil, err
-	}
-	delete(TokenCache, oldToken.Token)
-	delete(DeviceCache, oldToken.Device)
-	return &oldToken, nil
+// FindByToken requires a token string, if exists returns a pointer to the token struct.
+func FindByToken(token string) *DeviceToken {
+	//client := conf_db.GetConfDB()
+	//stmt := `SELECT device,token,created_at,expires_at FROM device_tokens WHERE token = $1;`
+	//var oldToken DeviceToken
+	//err := (*client).QueryRowx(stmt, token).StructScan(&oldToken)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//delete(TokenCache, oldToken.Token)
+	//delete(DeviceCache, oldToken.Device)
+	return TokenCache[token]
 }
 
-func FindByDevice(device string) (*DeviceToken, error) {
-	client := conf_db.GetConfDB()
-	stmt := `SELECT device,token,created_at,expires_at FROM device_tokens WHERE device = $1;`
-	var oldToken DeviceToken
-	err := (*client).QueryRowx(stmt, device).StructScan(&oldToken)
-	if err != nil {
-		return nil, err
-	}
-	delete(TokenCache, oldToken.Token)
-	delete(DeviceCache, oldToken.Device)
-	return &oldToken, nil
+// FindByDevice as device names are unique, gets a string with a device name and tries to find it at token cache.
+func FindByDevice(device string) *DeviceToken {
+	//client := conf_db.GetConfDB()
+	//stmt := `SELECT device,token,created_at,expires_at FROM device_tokens WHERE device = $1;`
+	//var oldToken DeviceToken
+	//err := (*client).QueryRowx(stmt, device).StructScan(&oldToken)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//delete(TokenCache, oldToken.Token)
+	//delete(DeviceCache, oldToken.Device)
+	return DeviceCache[device]
 }
 
+// Delete removes token from database and cache.
 func (e *DeviceToken) Delete() error {
 	client := conf_db.GetConfDB()
 	stmt := `DELETE FROM device_tokens WHERE token = $1;`
@@ -91,9 +96,9 @@ func (e *DeviceToken) Delete() error {
 	return nil
 }
 
+// Validate checks token fields correctness
 func (e DeviceToken) Validate() error {
 	if strings.TrimSpace(e.Device) == "" || len(e.Device) > 50 {
-		fmt.Println(e.Device)
 		return invalidDevice
 	}
 	if strings.TrimSpace(e.Token) == "" {
@@ -112,6 +117,7 @@ func (e DeviceToken) Validate() error {
 	return nil
 }
 
+// CheckToken auxiliar function takes a token string and tries to find it in cache.
 func CheckToken(token string) (bool, string) {
 	result := TokenCache[token]
 	if result == nil {
@@ -120,14 +126,19 @@ func CheckToken(token string) (bool, string) {
 	return true, result.Device
 }
 
+// generateSecureToken fills a length []byte array with random bits, and returns a encoded hex string.
 func generateSecureToken(length int) string {
-	b := make([]byte, length)
-	if _, err := rand.Read(b); err != nil {
-		return ""
+	if length >= 0 && length <= 32 {
+		b := make([]byte, length)
+		if _, err := rand.Read(b); err != nil {
+			return ""
+		}
+		return hex.EncodeToString(b)
 	}
-	return hex.EncodeToString(b)
+	return ""
 }
 
+// RecoverTokens auxiliar function fills cache with tokens saved in database.
 func RecoverTokens() (int, error) {
 	client := conf_db.GetConfDB()
 	var cont int
@@ -146,7 +157,7 @@ func RecoverTokens() (int, error) {
 		err = token.Validate()
 		if err != nil {
 			cont--
-			fmt.Println("Se eliminó token inválido")
+			//fmt.Printf("Se elimino token inválido %s\n", err.Error())
 			continue
 		}
 		TokenCache[token.Token] = &token

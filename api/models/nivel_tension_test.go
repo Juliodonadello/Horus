@@ -64,7 +64,7 @@ func TestTensionGenerador_Write(t *testing.T) {
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Write() got = %v, want %v", got, tt.want)
+				t.Errorf("Write() got = %v, Want %v", got, tt.want)
 			}
 		})
 	}

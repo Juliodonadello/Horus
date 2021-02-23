@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+  tsdb:
+    build: ./tsdb
+    restart: always
+    container_name: metrics-db
+    ports:
+      - 8086:8086
+    volumes:
+      - ./tsdb/config.yml:/config.yml
+
+  db:
+    image: postgres:12
+    restart: always
+    container_name: events-db
+    environment:
+      POSTGRES_PASSWORD: ccicevents
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db/db-scripts:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer:4.7.9
+    container_name: adminer-aux
+    restart: always
+    ports:
+      - 4000:8080
+
+  horus-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.test
+    container_name: api-horus
+    restart: always
+    env_file:
+      - api/horus-api.env
+    depends_on:
+      - tsdb
+      - db
+
+
+networks:
+  default:
+    external:
+      name: horus-ccic
+

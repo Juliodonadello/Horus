@@ -34,8 +34,7 @@ func (d DeviceTokenController) GetToken(c *gin.Context) {
 	isAdmin, err := userIsAdmin(loginData)
 	var newToken models.DeviceToken
 	if isAdmin {
-		newToken.Create(loginData.Device)
-		err = newToken.Validate()
+		err = newToken.Create(loginData.Device)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "status": http.StatusBadRequest})
 			return
@@ -68,7 +67,7 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 			return
 		}
 		if token == "" {
-			oldToken, err = models.FindByDevice(device)
+			oldToken = models.FindByDevice(device)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
 				return
@@ -79,7 +78,7 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 				return
 			}
 		} else {
-			oldToken, err = models.FindByToken(token)
+			oldToken = models.FindByToken(token)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
 				return
