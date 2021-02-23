@@ -46,7 +46,9 @@ services:
       - 4000:8080
 
   horus-api:
-    build: ./api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     container_name: api-horus
     restart: always
     ports:
