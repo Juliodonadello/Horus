@@ -74,16 +74,26 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 		}
 		if token == "" {
 			oldToken = models.FindByDevice(device)
-			err = oldToken.Delete()
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
+			if oldToken != nil {
+				err = oldToken.Delete()
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
+					return
+				}
+			} else {
+				c.JSON(http.StatusNotFound, gin.H{"error": "dispositivo no hallado", "status": http.StatusNotFound})
 				return
 			}
 		} else {
 			oldToken = models.FindByToken(token)
-			err = oldToken.Delete()
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
+			if oldToken != nil {
+				err = oldToken.Delete()
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "status": http.StatusInternalServerError})
+					return
+				}
+			} else {
+				c.JSON(http.StatusNotFound, gin.H{"error": "token no hallado", "status": http.StatusNotFound})
 				return
 			}
 		}
