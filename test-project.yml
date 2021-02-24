@@ -31,7 +31,7 @@ services:
   horus-api:
     build:
       context: ./api
-      dockerfile: api/test/Dockerfile.test
+      dockerfile: ./test/Dockerfile.test
     container_name: api-horus
     restart: always
     env_file:

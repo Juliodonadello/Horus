@@ -20,7 +20,6 @@ Sistema de monitorización de indicadores clave de performance de los Centros de
 * PostgreSQL
 * InfluxDB
 * Grafana
-
 ### Instalación
 ```bash
 git clone https://proyecto-horus-admin@bitbucket.org/proyecto-horus/horus-jccic-principal.git
@@ -29,9 +28,17 @@ docker volume create --name=grafana-data
 docker network create --subnet 10.20.0.0/24 horus-ccic
 docker-compose up --build
 ```
-### Para dar TLS al dashboard
+### Para correr tests API
+Si ya ha corrido el sistema debe eliminar las imagenes creadas para generar el contenedor de pruebas
 ```bash
-docker volume create --name=grafana-data
-docker network create --subnet 10.20.0.0/24 horus-ccic
-docker-compose up --build
+docker-compose down --rmi all
+```
+Entonces hacer
+```bash
+docker-compose -f test-project.yml up
+```
+Y podra ver los resultados de los test en el log del contenedor api-horus. Para volver a instanciar los contentenedores de
+produccion debera nuevamente utilizar el comando:
+```bash
+docker-compose down --rmi all
 ```
