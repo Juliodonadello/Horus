@@ -4,8 +4,14 @@ import (
 	"api/middleware"
 	"github.com/gin-contrib/secure"
 	"github.com/gin-gonic/gin"
+	"os"
 )
 import "api/controllers"
+
+var (
+	grafanaHost = os.Getenv("GRAFANA_HOST")
+	grafanaPort = os.Getenv("GRAFANA_PORT")
+)
 
 func NewRouter() *gin.Engine {
 	router := gin.New()
@@ -25,8 +31,8 @@ func NewRouter() *gin.Engine {
 	}))
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-
-	router.GET("/ping", Pong)
+	healthReport := new(controllers.HealthCheckController)
+	router.GET("health-check", healthReport.HealthCheckReport)
 	v1 := router.Group("v1")
 	{
 
@@ -60,10 +66,4 @@ func NewRouter() *gin.Engine {
 		}
 	}
 	return router
-}
-
-func Pong(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "pong",
-	})
 }
