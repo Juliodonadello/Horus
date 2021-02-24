@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"api/models"
-	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -132,7 +131,6 @@ func (d DeviceTokenController) ListTokens(c *gin.Context) {
 
 func userIsAdmin(loginData LoginData) (bool, error) {
 	url := fmt.Sprintf("https://%s:%s@%s:%s/api/user", loginData.Username, loginData.Password, grafanaHost, grafanaPort)
-	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	resp, err := http.Get(url)
 	if err != nil {
 		//c.JSON(http.StatusServiceUnavailable, gin.H{"error": err.Error(), "status": http.StatusServiceUnavailable})

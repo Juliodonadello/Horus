@@ -5,15 +5,17 @@ import (
 	"api/metrics_db"
 	"api/models"
 	"api/server"
+	"crypto/tls"
 	"fmt"
+	"net/http"
 	"time"
 )
 
-// https://gin-gonic.com/docs/examples/custom-http-config/
-// https://github.com/vsouza/go-gin-boilerplate
 func main() {
 	time.Sleep(10 * time.Second)
 	currentTime := time.Now()
+	// Por la falta de certificados firmados...
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	fmt.Println("Current Time in String: ", currentTime.String())
 	httpsRouter := server.NewRouter()
 	httpRouter := server.NewRouter()

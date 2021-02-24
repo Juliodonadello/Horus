@@ -8,6 +8,7 @@ import (
 
 type EstadoServicioController struct{}
 
+// Save guarda un update del estado de servicio de la facilidad
 func (e EstadoServicioController) Save(c *gin.Context) {
 	var estadoServicioNuevo models.EstadoServicio
 	if err := c.ShouldBindJSON(&estadoServicioNuevo); err != nil {
