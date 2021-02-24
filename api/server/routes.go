@@ -4,6 +4,7 @@ import (
 	"api/middleware"
 	"github.com/gin-contrib/secure"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"os"
 )
 import "api/controllers"
@@ -31,11 +32,14 @@ func NewRouter() *gin.Engine {
 	}))
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	router.LoadHTMLFiles("./docs/index.html")
 	healthReport := new(controllers.HealthCheckController)
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
 	router.GET("health-check", healthReport.HealthCheckReport)
 	v1 := router.Group("v1")
 	{
-
 		metricsGroup := v1.Group("metricas")
 		metricsGroup.Use(middleware.TokenDeviceAuth())
 		{

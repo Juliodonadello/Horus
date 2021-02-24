@@ -28,6 +28,8 @@ docker volume create --name=grafana-data
 docker network create --subnet 10.20.0.0/24 horus-ccic
 docker-compose up --build
 ```
+### Documentacion de API
+Ingresando desde un navegador web a la IP donde se encuentra desplegado el sistema. Si es en su misma equipo: https://localhost/
 ### Para correr tests API
 Si ya ha corrido el sistema debe eliminar las imagenes creadas para generar el contenedor de pruebas
 ```bash

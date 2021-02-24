@@ -1,0 +1,767 @@
+<!doctype html>
+<html>
+  <head>
+    <title>API Horus - Tablero de Control</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>API Horus - Tablero de Control</h1>
+    <div class="app-desc">API para entrada de metricas y eventos Sistema Horus Tablero de Control</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="cmaceira@fie.undef.edu.ar">cmaceira@fie.undef.edu.ar</a></div>
+    <div class="app-desc">Version: 1.0.0-oas3</div>
+    <div class="app-desc">BasePath:/carlos1987/Horus-JCCIC/1.0.0</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Admin">Admin</a></h4>
+  <ul>
+  <li><a href="#getToken"><code><span class="http-method">post</span> /token/generate</code></a></li>
+  <li><a href="#listToken"><code><span class="http-method">delete</span> /token/list</code></a></li>
+  <li><a href="#revokeToken"><code><span class="http-method">delete</span> /token/revoke</code></a></li>
+  </ul>
+  <h4><a href="#Devices">Devices</a></h4>
+  <ul>
+  <li><a href="#clearRegisters"><code><span class="http-method">delete</span> /eventos/mens-mil</code></a></li>
+  <li><a href="#saveEstadoServicio"><code><span class="http-method">post</span> /metricas/estado-servicio</code></a></li>
+  <li><a href="#saveLongitudCola"><code><span class="http-method">post</span> /metricas/longitud-cola</code></a></li>
+  <li><a href="#saveMensMilEvent"><code><span class="http-method">post</span> /eventos/mens-mil</code></a></li>
+  <li><a href="#saveNivelCombustible"><code><span class="http-method">post</span> /metricas/nivel-combus</code></a></li>
+  <li><a href="#saveTensionGenerador"><code><span class="http-method">post</span> /metricas/nivel-tension</code></a></li>
+  </ul>
+  <h4><a href="#Open">Open</a></h4>
+  <ul>
+  <li><a href="#healtCheckReport"><code><span class="http-method">post</span> /health-check</code></a></li>
+  </ul>
+
+  <h1><a name="Admin">Admin</a></h1>
+  <div class="method"><a name="getToken"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /token/generate</code></pre></div>
+    <div class="method-summary">Entrega un token de autorizacion para dispositivo (<span class="nickname">getToken</span>)</div>
+    <div class="method-notes">Contando con las credenciales de admin del dashboard permite obtener un token para acceder a los endpoind de devices</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">user (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Usuario de grafana dashboard </div>      <div class="param">pass (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Contrasena de grafana dashboard </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200">inline_response_200</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "facilidad" : "generador 1",
+  "token" : "3d862ca45c9f1038031adfe4b6b08c5b"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    ingresado a la base de datos
+        <a href="#inline_response_200">inline_response_200</a>
+    <h4 class="field-label">400</h4>
+    parametros incompletos
+        <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    usuario y contrasenia no autorizados
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo establecer conexion entre HorusAPI y grafana
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="listToken"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /token/list</code></pre></div>
+    <div class="method-summary">listar los tokens y facilidades (<span class="nickname">listToken</span>)</div>
+    <div class="method-notes">listar los tokens y facilidades actuales</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_1">inline_response_200_1</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "facilidad" : "generador 1",
+  "token" : "3d862ca45c9f1038031adfe4b6b08c5b"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    lista de tokens y facilidaes
+        <a href="#inline_response_200_1">inline_response_200_1</a>
+    <h4 class="field-label">401</h4>
+    usuario y contrasenia no autorizados
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    token/dispositivo no hallado
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="revokeToken"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /token/revoke</code></pre></div>
+    <div class="method-summary">dar de baja token de la lista de tokens autorizados (<span class="nickname">revokeToken</span>)</div>
+    <div class="method-notes">dar de baja el token de la lista de tokens autorizados</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_1">inline_response_200_1</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "facilidad" : "generador 1",
+  "token" : "3d862ca45c9f1038031adfe4b6b08c5b"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    eliminado de la base de datos
+        <a href="#inline_response_200_1">inline_response_200_1</a>
+    <h4 class="field-label">401</h4>
+    usuario y contrasenia no autorizados
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    token/dispositivo no hallado
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Devices">Devices</a></h1>
+  <div class="method"><a name="clearRegisters"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /eventos/mens-mil</code></pre></div>
+    <div class="method-summary">limpia todos los registros de transacciones de mm (<span class="nickname">clearRegisters</span>)</div>
+    <div class="method-notes">vaciar la tabla de registros de mensaje militar para reiniciar el seguimiento.</div>
+
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    ingresado a la base de datos
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="saveEstadoServicio"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /metricas/estado-servicio</code></pre></div>
+    <div class="method-summary">Ingresa el estado de servicio de una facilidad (<span class="nickname">saveEstadoServicio</span>)</div>
+    <div class="method-notes">Guarda un update del estado de servicio de la facilidad</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#EstadoServicio">EstadoServicio</a> (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Entrada de actualizacion de estado de servicio </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    ingresado a la base de datos
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    entrada descartada
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="saveLongitudCola"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /metricas/longitud-cola</code></pre></div>
+    <div class="method-summary">Ingresa el estado de cola de mensajes de una facilidad (<span class="nickname">saveLongitudCola</span>)</div>
+    <div class="method-notes">Guarda un update del estado de cola de mensajes de la facilidad</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#LongitudCola">LongitudCola</a> (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Entrada de actualizacion de la longitud de cola de mensajes de la facilidad </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    ingresado a la base de datos
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    entrada descartado
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="saveMensMilEvent"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /eventos/mens-mil</code></pre></div>
+    <div class="method-summary">Ingresa la operacion realizada con el mm (<span class="nickname">saveMensMilEvent</span>)</div>
+    <div class="method-notes">Guarda un evento de transaccion entre facilidades de un mensaje militar</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#MensMilEvent">MensMilEvent</a> (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Entrada de transaccion de MM </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    ingresado a la base de datos
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    entrada descartado
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="saveNivelCombustible"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /metricas/nivel-combus</code></pre></div>
+    <div class="method-summary">Ingresa el nivel de combustible de un equipo asociado (<span class="nickname">saveNivelCombustible</span>)</div>
+    <div class="method-notes">Guarda un update del nivel de combustible del equipo asociado</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#NivelCombustible">NivelCombustible</a> (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Entrada de actualizacion dnivel de combustible del equipo asociado </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    ingresado a la base de datos
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    entrada descartado
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="saveTensionGenerador"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /metricas/nivel-tension</code></pre></div>
+    <div class="method-summary">Ingresa el nivel de tension de un equipo asociado (<span class="nickname">saveTensionGenerador</span>)</div>
+    <div class="method-notes">Guarda un update del nivel de combustible del equipo asociado</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#TensionGenerador">TensionGenerador</a> (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Entrada de actualizacion de nivel de tension del equipo asociado </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    ingresado a la base de datos
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    entrada descartado
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    no se pudo escribir en la base de datos
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Open">Open</a></h1>
+  <div class="method"><a name="healtCheckReport"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /health-check</code></pre></div>
+    <div class="method-summary">Reporta el estado de salud del sistema horus (<span class="nickname">healtCheckReport</span>)</div>
+    <div class="method-notes">Reporta el estado de salud del sistema horus</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#HealthCheckReport">HealthCheckReport</a> (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Entrada de transaccion de MM </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    se obtiene el reporte de estado del sistema
+        <a href="#"></a>
+    <h4 class="field-label">500</h4>
+    errores criticos en las peticiones a las bases de datos y grafana
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#EstadoServicio"><code>EstadoServicio</code></a></li>
+    <li><a href="#HealthCheckReport"><code>HealthCheckReport</code></a></li>
+    <li><a href="#LongitudCola"><code>LongitudCola</code></a></li>
+    <li><a href="#MensMilEvent"><code>MensMilEvent</code></a></li>
+    <li><a href="#NivelCombustible"><code>NivelCombustible</code></a></li>
+    <li><a href="#TensionGenerador"><code>TensionGenerador</code></a></li>
+    <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
+    <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="EstadoServicio"><code>EstadoServicio</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">facilidad </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: ECR Cdo</span></div>
+<div class="param">estado </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: en_servicio</span></div>
+<div class="param">timestamp </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: unix-timestamp</div>
+          <div class="param-desc"><span class="param-type">example: 1614163205</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="HealthCheckReport"><code>HealthCheckReport</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">db </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: up</span></div>
+<div class="param">grafana </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: \&quot;ok\&quot;</span></div>
+<div class="param">tsdb </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: pass</span></div>
+<div class="param">tokens </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 1</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="LongitudCola"><code>LongitudCola</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">facilidad </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: ECR Cdo</span></div>
+<div class="param">long_cola </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 5</span></div>
+<div class="param">timestamp </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: unix-timestamp</div>
+          <div class="param-desc"><span class="param-type">example: 1614163205</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MensMilEvent"><code>MensMilEvent</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">nro_mm </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 1</span></div>
+<div class="param">clasificacion </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: reservado</span></div>
+<div class="param">precedencia </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: rutina</span></div>
+<div class="param">cifrado </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: true</span></div>
+<div class="param">destino </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Puesto Comando</span></div>
+<div class="param">origen </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Centro de Mensajes</span></div>
+<div class="param">evento </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: entregar</span></div>
+<div class="param">timestamp </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: unix-timestamp</div>
+          <div class="param-desc"><span class="param-type">example: 1614163205</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="NivelCombustible"><code>NivelCombustible</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">generador </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: generador 1</span></div>
+<div class="param">nivel </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 5.4</span></div>
+<div class="param">timestamp </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: unix-timestamp</div>
+          <div class="param-desc"><span class="param-type">example: 1614163205</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="TensionGenerador"><code>TensionGenerador</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">generador </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: generador 1</span></div>
+<div class="param">nivel (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 223.6</span></div>
+<div class="param">timestamp </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: unix-timestamp</div>
+          <div class="param-desc"><span class="param-type">example: 1614163205</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200"><code>inline_response_200</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">facilidad (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nombre de la facilidad asociada al token creado </div>
+          <div class="param-desc"><span class="param-type">example: generador 1</span></div>
+<div class="param">token (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Token de la facilidad asociada al token creado </div>
+          <div class="param-desc"><span class="param-type">example: 3d862ca45c9f1038031adfe4b6b08c5b</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_1"><code>inline_response_200_1</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">facilidad (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nombre de la facilidad asociada al token eliminado </div>
+          <div class="param-desc"><span class="param-type">example: generador 1</span></div>
+<div class="param">token (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Token de la facilidad asociada al token eliminado </div>
+          <div class="param-desc"><span class="param-type">example: 3d862ca45c9f1038031adfe4b6b08c5b</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

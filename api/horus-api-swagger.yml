@@ -1,0 +1,324 @@
+swagger: '2.0'
+info:
+  description: API para entrada de metricas y eventos al tablero de conttrol Horus
+  version: 1.0.0
+  title: API Horus - Tablero de Control
+  # put the contact info for your development or API team
+  contact:
+    email: cmaceira@fie.undef.edu.ar
+
+# tags are used for organizing operations
+tags:
+  - name: devices
+    description: Segurizados con bearer token.
+  - name: admin
+    description: Requieren de una cuenta admin del dashboard
+  - name: open
+    description: No requiere atuenticacion
+
+paths:
+  /v1/metricas/estado-servicio:
+    post:
+      tags:
+        - devices
+      summary: Ingresa el estado de servicio de una facilidad
+      operationId: SaveEstadoServicio
+      description: Guarda un update del estado de servicio de la facilidad
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: EstadoServicio
+          description: Entrada de actualizacion de estado de servicio
+          schema:
+            $ref: '#/definitions/EstadoServicio'
+      responses:
+        200:
+          description: ingresado a la base de datos
+        400:
+          description: entrada descartada
+        500:
+          description: no se pudo escribir en la base de datos
+  /v1/metricas/longitud-cola:
+    post:
+      tags:
+        - devices
+      summary: Ingresa el estado de cola de mensajes de una facilidad
+      operationId: SaveLongitudCola
+      description: Guarda un update del estado de cola de mensajes de la facilidad
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: LongitudCola
+          description: Entrada de actualizacion de la longitud de cola de mensajes de la facilidad
+          schema:
+            $ref: '#/definitions/LongitudCola'
+      responses:
+        200:
+          description: ingresado a la base de datos
+        400:
+          description: entrada descartado
+        500:
+          description: no se pudo escribir en la base de datos
+  /v1/metricas/nivel-combus:
+    post:
+      tags:
+        - devices
+      summary: Ingresa el nivel de combustible de un equipo asociado
+      operationId: SaveNivelCombustible
+      description: Guarda un update del nivel de combustible del equipo asociado
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: NivelCombustible
+          description: Entrada de actualizacion dnivel de combustible del equipo asociado
+          schema:
+            $ref: '#/definitions/NivelCombustible'
+      responses:
+        200:
+          description: ingresado a la base de datos
+        400:
+          description: entrada descartado
+        500:
+          description: no se pudo escribir en la base de datos
+  /v1/metricas/nivel-tension:
+    post:
+      tags:
+        - devices
+      summary: Ingresa el nivel de tension de un equipo asociado
+      operationId: SaveTensionGenerador
+      description: Guarda un update del nivel de combustible del equipo asociado
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: TensionGenerador
+          description: Entrada de actualizacion de nivel de tension del equipo asociado
+          schema:
+            $ref: '#/definitions/TensionGenerador'
+      responses:
+        200:
+          description: ingresado a la base de datos
+        400:
+          description: entrada descartado
+        500:
+          description: no se pudo escribir en la base de datos
+  /v1/eventos/mens-mil:
+    post:
+      tags:
+        - devices
+      summary: Ingresa la operacion realizada con el mm
+      operationId: SaveMensMilEvent
+      description: Guarda un evento de transaccion entre facilidades de un mensaje militar
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: MensMilEvent
+          description: Entrada de transaccion de MM
+          schema:
+            $ref: '#/definitions/MensMilEvent'
+      responses:
+        200:
+          description: ingresado a la base de datos
+        400:
+          description: entrada descartado
+        500:
+          description: no se pudo escribir en la base de datos
+    delete:
+      tags:
+        - devices
+      summary: limpia todos los registros de transacciones de mm
+      operationId: ClearRegisters
+      description: vaciar la tabla de registros de mensaje militar para reiniciar el seguimiento.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ingresado a la base de datos
+        500:
+          description: no se pudo escribir en la base de datos
+  /v1/token/generate:
+    post:
+      tags:
+        - admin
+      summary: Entrega un token de autorizacion para dispositivo
+      operationId: getToken
+      description: Contando con las credenciales de admin del dashboard permite obtener un token para acceder a los endpoind de devices
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: user
+          description: Usuario de grafana dashboard
+          type: string
+        - in: query
+          name: pass
+          description: Contrasena de grafana dashboard
+          type: string
+      responses:
+        200:
+          description: ingresado a la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tokenResponse'
+        400:
+          description: parametros incompletos
+        500:
+          description: no se pudo establecer conexion entre HorusAPI y grafana
+    delete:
+      tags:
+        - devices
+      summary: limpia todos los registros de transacciones de mm
+      operationId: revokeToken
+      description: vaciar la tabla de registros de mensaje militar para reiniciar el seguimiento.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ingresado a la base de datos
+        500:
+          description: no se pudo escribir en la base de datos
+
+definitions:
+  EstadoServicio:
+    type: object
+    required:
+      - facilidad
+      - estado
+      - timestamp
+    properties:
+      facilidad:
+        type: string
+        example: ECR Cdo
+      estado:
+        type: string
+        example: en_servicio
+      timestamp:
+        type: integer
+        format: unix-timestamp
+        example: 1614163205
+  LongitudCola:
+    type: object
+    required:
+      - facilidad
+      - long_cola
+      - timestamp
+    properties:
+      facilidad:
+        type: string
+        example: ECR Cdo
+      long_cola:
+        type: integer
+        example: 5
+      timestamp:
+        type: integer
+        format: unix-timestamp
+        example: 1614163205
+  NivelCombustible:
+    type: object
+    required:
+      - generador
+      - nivel
+      - timestamp
+    properties:
+      generador:
+        type: string
+        example: generador 1
+      nivel:
+        type: number
+        example: 5.4
+      timestamp:
+        type: integer
+        format: unix-timestamp
+        example: 1614163205
+  TensionGenerador:
+    type: object
+    required:
+      - generador
+      - tension
+      - timestamp
+    properties:
+      generador:
+        type: string
+        example: generador 1
+      nivel:
+        type: number
+        example: 223.6
+      timestamp:
+        type: integer
+        format: unix-timestamp
+        example: 1614163205
+  MensMilEvent:
+    type: object
+    required:
+      - nro_mm
+      - clasificacion
+      - precedencia
+      - cifrado
+      - destino
+      - origen
+      - evento
+      - timestamp
+    properties:
+      nro_mm:
+        type: integer
+        example: 1
+      clasificacion:
+        type: string
+        example: reservado
+      precedencia:
+        type: string
+        example: rutina
+      cifrado:
+        type: boolean
+        example: true
+      destino:
+        type: string
+        example: Puesto Comando
+      origen:
+        type: string
+        example: Centro de Mensajes
+      evento:
+        type: string
+        example: entregar
+      timestamp:
+        type: integer
+        format: unix-timestamp
+        example: 1614163205
+  tokenResponse:
+    type: object
+    required:
+      - device
+      - token
+    properties:
+      device:
+        type: string
+        example: generador 1
+      token:
+        type: string
+        example: 3d862ca45c9f1038031adfe4b6b08c5b
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /carlos1987/Horus-JCCIC/1.0.0
+schemes:
+  - https

@@ -15,6 +15,7 @@ RUN CGO_ENABLED=0 go build \
 FROM scratch AS final
 # Compilo mi imagen
 COPY --from=builder /app /app
+COPY ./docs ./docs
 COPY ./certs ./
 EXPOSE 443
 EXPOSE 80
