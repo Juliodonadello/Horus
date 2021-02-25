@@ -292,9 +292,11 @@
       "hiddenSeries": false,
       "id": 2,
       "legend": {
-        "alignAsTable": true,
+        "alignAsTable": false,
         "avg": false,
         "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
         "max": false,
         "min": false,
         "rightSide": false,
@@ -315,7 +317,11 @@
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:1080"
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -337,7 +343,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "FinalOutput = [\"_value\", \"_time\", \"_field\", \"facilidad\"]\r\n\r\ndata = from(bucket: \"colas-espera\")\r\n  |> range(start: -15m)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"facilidad\"] == \"Centro de Mensajes\")\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:\"Longitud Cola MM\", facilidad:r.facilidad}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
+          "query": "FinalOutput = [\"_value\", \"_time\", \"_field\", \"facilidad\"]\r\n\r\ndata = from(bucket: \"colas-espera\")\r\n  |> range(start: -1h, stop: now())\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"facilidad\"] == \"Centro de Mensajes\")\r\n  |> aggregateWindow(every: 1m, fn: last, createEmpty: false)\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:\"Longitud Cola MM\", facilidad:r.facilidad}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -379,8 +385,8 @@
         {
           "$$hashKey": "object:47",
           "decimals": 0,
-          "format": "Mensajes",
-          "label": null,
+          "format": "MM",
+          "label": "Mensajes",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -661,7 +667,7 @@
       "type": "table"
     }
   ],
-  "refresh": "5m",
+  "refresh": false,
   "schemaVersion": 27,
   "style": "dark",
   "tags": [],
@@ -709,7 +715,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
