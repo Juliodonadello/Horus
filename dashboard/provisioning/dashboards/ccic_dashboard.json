@@ -39,7 +39,7 @@
             "mode": "thresholds"
           },
           "custom": {},
-          "decimals": 1,
+          "decimals": 2,
           "mappings": [
             {
               "from": "",
@@ -110,7 +110,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"combustible-generador\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"litros\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"nivel\")\r\n  |> unique(column: \"generador\")\r\n  |> yield(name: \"last\")",
+          "query": "FinalOutput = [\"_value\", \"_time\", \"_measurement\", \"generador\"]\r\n\r\ndata = from(bucket: \"combustible-generador\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"litros\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"nivel\")\r\n  |> unique(column: \"generador\")\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _measurement:\"Litros\",_field:\"Nivel\", generador:r.generador}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -134,51 +134,83 @@
       "type": "gauge"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": "metrics-db",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {},
+          "mappings": [
+            {
+              "from": "225",
+              "id": 1,
+              "text": "OK!",
+              "to": "215",
+              "type": 2
+            }
+          ],
+          "noValue": "Verificar!",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 200
+              },
+              {
+                "color": "green",
+                "value": 215
+              },
+              {
+                "color": "green",
+                "value": 220
+              },
+              {
+                "color": "yellow",
+                "value": 225
+              },
+              {
+                "color": "red",
+                "value": 235
+              }
+            ]
+          },
+          "unit": "volt"
         },
         "overrides": []
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 10,
         "w": 6,
         "x": 6,
         "y": 1
       },
-      "hiddenSeries": false,
       "id": 14,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value_and_name"
       },
-      "percentage": false,
       "pluginVersion": "7.4.0",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "groupBy": [
@@ -197,7 +229,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"tension-generador\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"volts\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tension\")\r\n  |> filter(fn: (r) => r[\"generador\"] == \"Generador CMD\" or r[\"generador\"] == \"Generador PC\" or r[\"generador\"] == \"Generador Redes Ext\" or r[\"generador\"] == \"Generador Redes Int\")\r\n  |> aggregateWindow(every: 5m, fn: median, createEmpty: false)\r\n  |> yield(name: \"median\")",
+          "query": "data = from(bucket: \"tension-generador\")\r\n  |> range(start: -5m, stop: now())\r\n  |> aggregateWindow(every: 1m, fn: median, createEmpty: false)\r\n  |> unique(column: \"generador\")\r\n\r\nrenamedData = data\r\n  |> map(fn: (r) => ({_field:\"Tension\" , generador:r.generador, _value:r._value, _measurement:r._measurement, _time:r._time}))\r\n\r\n\r\nrenamedData |> yield()",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -217,46 +249,10 @@
           "tags": []
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Tensión Generadores",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "stat"
     },
     {
       "collapsed": false,
@@ -665,20 +661,60 @@
       "type": "table"
     }
   ],
-  "refresh": "1m",
+  "refresh": "5m",
   "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "220.12277221679688",
+          "value": "220.12277221679688"
+        },
+        "datasource": "metrics-db",
+        "definition": "from(bucket: \"tension-generador\")\n  |> range(start: -5m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"volts\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tension\")\n  |> filter(fn: (r) => r[\"generador\"] == \"Generador Redes Ext\")\n  |> aggregateWindow(every: 5m, fn: last, createEmpty: false)\n  |> yield()",
+        "description": "Generador Redes Ext",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Generador Redes Ext",
+        "multi": false,
+        "name": "gen_1",
+        "options": [
+          {
+            "selected": true,
+            "text": "220.12277221679688",
+            "value": "220.12277221679688"
+          },
+          {
+            "selected": false,
+            "text": "223.96192932128906",
+            "value": "223.96192932128906"
+          }
+        ],
+        "query": "from(bucket: \"tension-generador\")\n  |> range(start: -5m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"volts\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tension\")\n  |> filter(fn: (r) => r[\"generador\"] == \"Generador Redes Ext\")\n  |> aggregateWindow(every: 5m, fn: last, createEmpty: false)\n  |> yield()",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "CCIC - Comunicaciones",
   "uid": "d00gX1PMk",
-  "version": 3
+  "version": 1
 }
