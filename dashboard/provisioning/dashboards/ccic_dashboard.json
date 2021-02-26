@@ -15,8 +15,62 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
+  "iteration": 1614340184142,
   "links": [],
   "panels": [
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 22,
+        "y": 0
+      },
+      "id": 18,
+      "options": {
+        "bgColor": "",
+        "clockType": "24 hour",
+        "countdownSettings": {
+          "endCountdownTime": "2021-02-26T14:51:22-03:00",
+          "endText": "00:00:00"
+        },
+        "dateSettings": {
+          "dateFormat": "YYYY-MM-DD",
+          "fontSize": "20px",
+          "fontWeight": "normal",
+          "showDate": true
+        },
+        "mode": "time",
+        "timeSettings": {
+          "fontSize": "20px",
+          "fontWeight": "bold"
+        },
+        "timezone": "",
+        "timezoneSettings": {
+          "fontSize": "12px",
+          "fontWeight": "normal",
+          "showTimezone": false,
+          "zoneFormat": "offsetAbbv"
+        }
+      },
+      "pluginVersion": "7.4.0",
+      "targets": [
+        {
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Hora Actual",
+      "type": "grafana-clock-panel"
+    },
     {
       "collapsed": false,
       "datasource": null,
@@ -24,7 +78,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 3
       },
       "id": 8,
       "panels": [],
@@ -76,16 +130,16 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 1
+        "y": 4
       },
       "id": 12,
       "options": {
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "sum"
           ],
           "fields": "",
-          "values": true
+          "values": false
         },
         "showThresholdLabels": true,
         "showThresholdMarkers": true,
@@ -110,7 +164,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "FinalOutput = [\"_value\", \"_time\", \"_measurement\", \"generador\"]\r\n\r\ndata = from(bucket: \"combustible-generador\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"litros\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"nivel\")\r\n  |> unique(column: \"generador\")\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _measurement:\"Litros\",_field:\"Nivel\", generador:r.generador}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
+          "query": "FinalOutput = [\"_value\", \"_time\", \"_measurement\", \"generador\"]\r\n\r\ndata = from(bucket: \"combustible-generador\")\r\n  |> range(start: -5m, stop: now())\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"litros\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"nivel\")\r\n  |> aggregateWindow(every: 5m, fn: last)\r\n  |> unique(column: \"generador\")\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _measurement:\"Litros\",_field:\"Nivel\", generador:r.generador}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -192,7 +246,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 1
+        "y": 4
       },
       "id": 14,
       "options": {
@@ -261,7 +315,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 14
       },
       "id": 6,
       "panels": [],
@@ -284,10 +338,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 11,
+        "h": 8,
+        "w": 17,
         "x": 0,
-        "y": 12
+        "y": 15
       },
       "hiddenSeries": false,
       "id": 2,
@@ -409,18 +463,12 @@
     },
     {
       "datasource": "metrics-db",
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "custom": {
-            "align": "center",
-            "displayMode": "color-text",
-            "filterable": true,
-            "width": 200
-          },
+          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -428,6 +476,10 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -435,10 +487,94 @@
         "overrides": []
       },
       "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 17,
+        "y": 15
+      },
+      "id": 16,
+      "options": {
+        "displayMode": "basic",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "7.4.0",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "FinalOutput = [\"_value\", \"_time\", \"_field\", \"facilidad\"]\r\n\r\ndata = from(bucket: \"colas-espera\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"facilidad\"] == \"Red Cdo\" or r[\"facilidad\"] == \"Red Cdo Op\" or r[\"facilidad\"] == \"Red Icia\" or r[\"facilidad\"] == \"Red Mat Pers\" or r[\"facilidad\"] == \"Red Op\")\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:\"Longitud Cola MM\", facilidad:r.facilidad}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Cola de MM de Facilidades",
+      "type": "bargauge"
+    },
+    {
+      "datasource": "metrics-db",
+      "description": "Ultimo horario y estado reportado por la facilidad. Tener en cuenta no solo el estado si no su ausencia.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true,
+            "width": 200
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
         "h": 9,
         "w": 8,
-        "x": 11,
-        "y": 12
+        "x": 0,
+        "y": 23
       },
       "id": 4,
       "options": {
@@ -470,7 +606,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "FinalOutput = [\"Estado\", \"Ultima Actualización\",  \"Facilidad\"]\r\n\r\ndata = from(bucket: \"estado-servicio\")\r\n  |> range(start: -15m)\r\n  |> last()\r\n  |> group()\r\n  |> keep(columns: [\"_time\", \"_value\", \"facilidad\"])\r\n  |> unique(column: \"facilidad\")\r\n\r\nrenamedData = data\r\n  |> map(fn: (r) => ({\"Estado\":r._value, \"Ultima Actualización\":r._time, \"Facilidad\":r.facilidad}))\r\n  |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()\r\n\r\n",
+          "query": "FinalOutput = [\"Estado\", \"Ultima Actualización\",  \"Facilidad\"]\r\n\r\ndata = from(bucket: \"estado-servicio\")\r\n  |> range(start: -5m)\r\n  |> last()\r\n  |> group()\r\n  |> keep(columns: [\"_time\", \"_value\", \"facilidad\"])\r\n  |> unique(column: \"facilidad\")\r\n\r\nrenamedData = data\r\n  |> map(fn: (r) => ({\"Estado\":r._value, \"Ultima Actualización\":r._time, \"Facilidad\":r.facilidad}))\r\n  |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()\r\n\r\n",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -494,14 +630,27 @@
       "type": "table"
     },
     {
-      "datasource": "metrics-db",
+      "datasource": "events-db",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "custom": {},
-          "mappings": [],
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "",
+              "to": "",
+              "type": 1
+            }
+          ],
+          "max": 7,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -520,99 +669,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 4,
-        "x": 19,
-        "y": 12
-      },
-      "id": 16,
-      "options": {
-        "displayMode": "lcd",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "text": {}
-      },
-      "pluginVersion": "7.4.0",
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "FinalOutput = [\"_value\", \"_time\", \"_field\", \"facilidad\"]\r\n\r\ndata = from(bucket: \"colas-espera\")\r\n  |> range(start: -15m)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"facilidad\"] == \"Red Cdo\" or r[\"facilidad\"] == \"Red Cdo Op\" or r[\"facilidad\"] == \"Red Icia\" or r[\"facilidad\"] == \"Red Mat Pers\" or r[\"facilidad\"] == \"Red Op\")\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:\"Longitud Cola MM\", facilidad:r.facilidad}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Cola de MM de Facilidades",
-      "type": "bargauge"
-    },
-    {
-      "datasource": "events-db",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 21
+        "w": 16,
+        "x": 8,
+        "y": 23
       },
       "id": 10,
       "options": {
@@ -631,7 +690,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT * FROM mm_events;",
+          "rawSql": "SELECT \n  nro_mm AS \"Nro MM\",\n  precedencia AS \"PRECEDENCIA\",\n  destino AS \"DESTINO\",\n  origen AS \"ORIGEN\",\n  evento AS \"EVENTO\",\n gfh at time zone 'america/argentina/buenos_aires' AS \"GFH\"\nFROM mm_events;",
           "refId": "A",
           "select": [
             [
@@ -663,64 +722,24 @@
           ]
         }
       ],
-      "title": "Panel Title",
+      "title": "Procesamiento de MM",
       "type": "table"
     }
   ],
-  "refresh": false,
+  "refresh": "10s",
   "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "220.12277221679688",
-          "value": "220.12277221679688"
-        },
-        "datasource": "metrics-db",
-        "definition": "from(bucket: \"tension-generador\")\n  |> range(start: -5m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"volts\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tension\")\n  |> filter(fn: (r) => r[\"generador\"] == \"Generador Redes Ext\")\n  |> aggregateWindow(every: 5m, fn: last, createEmpty: false)\n  |> yield()",
-        "description": "Generador Redes Ext",
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Generador Redes Ext",
-        "multi": false,
-        "name": "gen_1",
-        "options": [
-          {
-            "selected": true,
-            "text": "220.12277221679688",
-            "value": "220.12277221679688"
-          },
-          {
-            "selected": false,
-            "text": "223.96192932128906",
-            "value": "223.96192932128906"
-          }
-        ],
-        "query": "from(bucket: \"tension-generador\")\n  |> range(start: -5m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"volts\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tension\")\n  |> filter(fn: (r) => r[\"generador\"] == \"Generador Redes Ext\")\n  |> aggregateWindow(every: 5m, fn: last, createEmpty: false)\n  |> yield()",
-        "refresh": 0,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      }
-    ]
+    "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "CCIC - Comunicaciones",
   "uid": "d00gX1PMk",
-  "version": 1
+  "version": 3
 }
