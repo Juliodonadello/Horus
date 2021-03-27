@@ -58,8 +58,10 @@ func NewRouter() *gin.Engine {
 		eventsGroup.Use(middleware.TokenDeviceAuth())
 		{
 			mensMilEvent := new(controllers.MensMilEventController)
+			sensorEvent := new(controllers.SensorEventController)
 			eventsGroup.POST("mens-mil", mensMilEvent.Save)
 			eventsGroup.DELETE("mens-mil", mensMilEvent.ClearRegisters)
+			eventsGroup.POST("sensor_bool", sensorEvent.Save)
 		}
 		tokenGroup := v1.Group("token")
 		{

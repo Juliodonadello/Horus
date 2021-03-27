@@ -16,8 +16,8 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO dashboard;
 CREATE TABLE IF NOT EXISTS mm_events (
     id SERIAL PRIMARY KEY,
     nro_mm INT NOT NULL,
-    clasif_seg CHAR(10) NOT NULL,
-    precedencia CHAR(10) NOT NULL,
+    clasif_seg CHAR(15) NOT NULL,
+    precedencia CHAR(15) NOT NULL,
     cifrado BOOLEAN NOT NULL,
     destino VARCHAR(50) NOT NULL,
     origen VARCHAR(50) NOT NULL,
@@ -27,6 +27,22 @@ CREATE TABLE IF NOT EXISTS mm_events (
 GRANT ALL PRIVILEGES ON TABLE mm_events TO api_events;
 GRANT ALL ON SEQUENCE mm_events_id_seq to api_events;
 GRANT SELECT ON TABLE mm_events TO dashboard;
+
+CREATE TABLE IF NOT EXISTS sensor_events (
+    id SERIAL PRIMARY KEY,
+    facilidad VARCHAR(50) NOT NULL,
+    evento VARCHAR(50) NOT NULL,
+    valor BOOLEAN NOT NULL,
+    gfh TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE sensor_events
+    ADD CONSTRAINT sensor_events_uq
+    UNIQUE (facilidad, evento);
+
+GRANT ALL PRIVILEGES ON TABLE sensor_events TO api_events;
+GRANT ALL ON SEQUENCE sensor_events_id_seq to api_events;
+GRANT SELECT ON TABLE sensor_events TO dashboard;
 
 \connect "api_horus";
 CREATE TABLE IF NOT EXISTS device_tokens (
