@@ -13,11 +13,13 @@ var (
 	InvalidGeneradorNivelCombustible = errors.New("NivelCombustible Model: Invalid Generator Name")
 	InvalidNivelNivelCombustible     = errors.New("NivelCombustible Model: Invalid Gas level value")
 	InvalidTimeNivelCombustible      = errors.New("NivelCombustible Model: Invalid Time Value, out of +- 600 sec range")
+	InvalidCapacidadNivelCombustible = errors.New("NivelCombustible Model: Invalid Capacidad")
 )
 
 type NivelCombustible struct {
 	Generador string  `json:"generador" binding:"required"`
 	Nivel     float32 `json:"nivel" binding:"required"`
+	Capacidad float32 `json:"capacidad" binding:"required"`
 	Time      int64   `json:"timestamp"`
 }
 
@@ -26,7 +28,9 @@ func (e NivelCombustible) Write() (*NivelCombustible, error) {
 	writeAPI := (*client).WriteAPIBlocking("ccic", "combustible-generador")
 	p := influxdb2.NewPoint("litros",
 		map[string]string{"generador": e.Generador},
-		map[string]interface{}{"nivel": e.Nivel},
+		map[string]interface{}{
+			"nivel":     e.Nivel,
+			"capacidad": e.Capacidad},
 		time.Unix(e.Time, 0))
 	err := writeAPI.WritePoint(context.Background(), p)
 	if err != nil {
@@ -38,6 +42,9 @@ func (e NivelCombustible) Write() (*NivelCombustible, error) {
 func (e NivelCombustible) Validate() error {
 	if strings.TrimSpace(e.Generador) == "" {
 		return InvalidGeneradorNivelCombustible
+	}
+	if e.Capacidad < 0.0 || e.Capacidad < e.Nivel {
+		return InvalidCapacidadNivelCombustible
 	}
 	if e.Nivel < 0.0 {
 		return InvalidNivelNivelCombustible
