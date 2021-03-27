@@ -6,19 +6,19 @@ import (
 	"net/http"
 )
 
-type TensionGeneradorController struct{}
+type AlimentacionController struct{}
 
-func (e TensionGeneradorController) Save(c *gin.Context) {
-	var tensionGeneradorNuevo models.TensionGenerador
-	if err := c.ShouldBindJSON(&tensionGeneradorNuevo); err != nil {
+func (e AlimentacionController) Save(c *gin.Context) {
+	var alimentacionNueva models.Alimentacion
+	if err := c.ShouldBindJSON(&alimentacionNueva); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := tensionGeneradorNuevo.Validate(); err != nil {
+	if err := alimentacionNueva.Validate(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	_, err := tensionGeneradorNuevo.Write()
+	_, err := alimentacionNueva.Write()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
