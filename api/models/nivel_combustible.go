@@ -18,7 +18,7 @@ var (
 
 type NivelCombustible struct {
 	Generador string  `json:"generador" binding:"required"`
-	Nivel     float32 `json:"nivel" binding:"required"`
+	Nivel     float32 `json:"nivel" binding:"numeric"`
 	Capacidad float32 `json:"capacidad" binding:"required"`
 	Time      int64   `json:"timestamp"`
 }

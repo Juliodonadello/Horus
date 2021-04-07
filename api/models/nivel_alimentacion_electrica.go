@@ -17,8 +17,8 @@ var (
 type Alimentacion struct {
 	Generador string  `json:"generador" binding:"required"`
 	Facilidad string  `json:"facilidad"`
-	Tension   float32 `json:"tension" binding:"required"`
-	Corriente float32 `json:"corriente" binding:"required"`
+	Tension   float32 `json:"tension" binding:"numeric"`
+	Corriente float32 `json:"corriente" binding:"numeric"`
 }
 
 func (e Alimentacion) Write() (*Alimentacion, error) {

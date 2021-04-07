@@ -8,6 +8,7 @@ influx bucket create --name colas-espera --retention 48h
 influx bucket create --name estado-servicio --retention 48h
 influx bucket create --name combustible-generador --retention 24h
 influx bucket create --name alimentacion-electrica --retention 1h
-influx user create --name jccic --password ExAmPl3PA55W0rD
+influx bucket create --name horus-dashboard 
+influx user create --name jccic --password C4p1t4nM4c31r4
 pkill -f influxd
 sleep 2
