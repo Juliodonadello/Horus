@@ -2,7 +2,7 @@ FROM quay.io/influxdb/influxdb:v2.0.3
 
 WORKDIR /
 COPY influx-setup.sh /
-RUN apt install -y procps dos2unix
+RUN apt install -y dos2unix
 RUN dos2unix influx-setup.sh
 RUN chmod +x influx-setup.sh
 ARG INFLUX_HOST=http://localhost:8086
