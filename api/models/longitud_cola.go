@@ -4,15 +4,16 @@ import (
 	"api/metrics_db"
 	"context"
 	"errors"
-	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"strings"
 	"time"
+
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
 var (
-	InvalidFacilityLongitudCola  = errors.New("LongitudCola Model: Invalid Facility Name")
-	InvalidQueueLongLongitudCola = errors.New("LongitudCola Model: Invalid Queue Long value")
-	InvalidTimeLongitudCola      = errors.New("LongitudCola Model: Invalid Time Value, out of +- 600 sec range")
+	ErrFooInvalidFacilityLongitudCola  = errors.New("LongitudCola Model: Invalid Facility Name")
+	ErrFooInvalidQueueLongLongitudCola = errors.New("LongitudCola Model: Invalid Queue Long value")
+	ErrFooInvalidTimeLongitudCola      = errors.New("LongitudCola Model: Invalid Time Value, out of +- 600 sec range")
 )
 
 type LongitudCola struct {
@@ -37,14 +38,14 @@ func (e LongitudCola) Write() (*LongitudCola, error) {
 
 func (e LongitudCola) Validate() error {
 	if strings.TrimSpace(e.Facilidad) == "" {
-		return InvalidFacilityLongitudCola
+		return ErrFooInvalidFacilityLongitudCola
 	}
 	if (*e.LongCola) < 0 {
-		return InvalidQueueLongLongitudCola
+		return ErrFooInvalidQueueLongLongitudCola
 	}
 	diffTime := time.Now().Unix() - e.Time
 	if diffTime > 600 || diffTime < -600 {
-		return InvalidTimeLongitudCola
+		return ErrFooInvalidTimeLongitudCola
 	}
 	return nil
 }

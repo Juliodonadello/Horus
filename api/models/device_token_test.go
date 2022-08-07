@@ -267,6 +267,9 @@ func TestRecoverTokens(t *testing.T) {
 		panic(err)
 	}
 	err = token2.Write()
+	if err != nil {
+		panic(err)
+	}
 	err = token3.Create("Red Alarm")
 	if err != nil {
 		panic(err)

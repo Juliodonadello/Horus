@@ -4,14 +4,15 @@ import (
 	"api/metrics_db"
 	"context"
 	"errors"
-	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"time"
+
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
 var (
-	InvalidGeneratorAlimentacion = errors.New("Alimentacion Model: Invalid Generator Name")
-	InvalidTensionAlimentacion   = errors.New("Alimentacion Model: Invalid tension level value")
-	InvalidCorrienteAlimentacion = errors.New("Alimentacion Model: Invalid corriente level value")
+	ErrFooInvalidGeneratorAlimentacion = errors.New("Alimentacion Model: Invalid Generator Name")
+	ErrFooInvalidTensionAlimentacion   = errors.New("Alimentacion Model: Invalid tension level value")
+	ErrFooInvalidCorrienteAlimentacion = errors.New("Alimentacion Model: Invalid corriente level value")
 )
 
 type Alimentacion struct {
@@ -37,13 +38,13 @@ func (e Alimentacion) Write() (*Alimentacion, error) {
 
 func (e Alimentacion) Validate() error {
 	if len(e.Generador) <= 0 {
-		return InvalidGeneratorAlimentacion
+		return ErrFooInvalidGeneratorAlimentacion
 	}
 	if e.Tension < 0.0 || e.Tension > 500.0 {
-		return InvalidTensionAlimentacion
+		return ErrFooInvalidTensionAlimentacion
 	}
 	if e.Corriente < 0.0 || e.Corriente > 50.0 {
-		return InvalidCorrienteAlimentacion
+		return ErrFooInvalidCorrienteAlimentacion
 	}
 	return nil
 }
