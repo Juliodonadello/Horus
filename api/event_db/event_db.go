@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	_ "github.com/lib/pq"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
 var (
@@ -16,7 +17,7 @@ var (
 	dbname   = os.Getenv("EVENT_DB_DBNAME")
 )
 
-var connectionError = errors.New("No se puede conectar a la eventdb PostgreSQL")
+var ErrFooConnectionError = errors.New("no se puede conectar a la eventdb PostgreSQL")
 var eventDB *sql.DB
 
 func Init() error {
@@ -26,7 +27,7 @@ func Init() error {
 	db, err := sql.Open("postgres", psqlInfo)
 	eventDB = db
 	if err != nil {
-		return connectionError
+		return ErrFooConnectionError
 	}
 	return nil
 }

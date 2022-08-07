@@ -3,13 +3,14 @@ package metrics_db
 import (
 	"context"
 	"errors"
-	"github.com/influxdata/influxdb-client-go/v2"
 	"os"
+
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
 var host, token = os.Getenv("METRIC_DB_HOST"), os.Getenv("METRIC_DB_TOKEN")
 
-var connectionError = errors.New("No se puede conectar a la TSDB InfluxDB")
+var ErrFooConnectionError = errors.New("no se puede conectar a la TSDB InfluxDB")
 var tsdb *influxdb2.Client
 
 func Init() error {
@@ -19,7 +20,7 @@ func Init() error {
 		return err
 	}
 	if server_status.Status == "fail" {
-		return connectionError
+		return ErrFooConnectionError
 	}
 	tsdb = &client
 	return nil

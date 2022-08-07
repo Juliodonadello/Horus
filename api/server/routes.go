@@ -1,17 +1,12 @@
 package server
 
 import (
+	"api/controllers"
 	"api/middleware"
+	"net/http"
+
 	"github.com/gin-contrib/secure"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"os"
-)
-import "api/controllers"
-
-var (
-	grafanaHost = os.Getenv("GRAFANA_HOST")
-	grafanaPort = os.Getenv("GRAFANA_PORT")
 )
 
 func NewRouter() *gin.Engine {

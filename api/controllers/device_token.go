@@ -5,16 +5,17 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 var (
-	grafanaHost         = os.Getenv("GRAFANA_HOST")
-	grafanaPort         = os.Getenv("GRAFANA_PORT")
-	externalAuthProblem = errors.New("DeviceTokenController: Can't reach dashboard user API")
+	grafanaHost               = os.Getenv("GRAFANA_HOST")
+	grafanaPort               = os.Getenv("GRAFANA_PORT")
+	ErrFooExternalAuthProblem = errors.New("DeviceTokenController: Can't reach dashboard user API")
 )
 
 type DeviceTokenController struct{}
@@ -32,7 +33,7 @@ func (d DeviceTokenController) GetToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "status": http.StatusBadRequest})
 		return
 	}
-	isAdmin, err := userIsAdmin(loginData)
+	isAdmin, _ := userIsAdmin(loginData)
 	var newToken models.DeviceToken
 	if isAdmin {
 		err = newToken.Create(loginData.Device)
@@ -50,8 +51,7 @@ func (d DeviceTokenController) GetToken(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized})
 	}
-	c.JSON(http.StatusInternalServerError, gin.H{"error": externalAuthProblem.Error(), "status": http.StatusInternalServerError})
-	return
+	c.JSON(http.StatusInternalServerError, gin.H{"error": ErrFooExternalAuthProblem.Error(), "status": http.StatusInternalServerError})
 }
 
 func (d DeviceTokenController) RevokeToken(c *gin.Context) {
@@ -61,7 +61,7 @@ func (d DeviceTokenController) RevokeToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "status": http.StatusBadRequest})
 		return
 	}
-	isAdmin, err := userIsAdmin(loginData)
+	isAdmin, _ := userIsAdmin(loginData)
 	if isAdmin {
 		token := c.Query("token")
 		device := c.Query("device")
@@ -109,7 +109,7 @@ func (d DeviceTokenController) ListTokens(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "status": http.StatusBadRequest})
 		return
 	}
-	isAdmin, err := userIsAdmin(loginData)
+	isAdmin, _ := userIsAdmin(loginData)
 	if isAdmin {
 		authorizedDevices := make(map[string]string)
 		for k, v := range models.DeviceCache {

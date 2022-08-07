@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"api/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type MensMilEventController struct{}

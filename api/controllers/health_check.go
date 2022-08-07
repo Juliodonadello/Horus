@@ -7,9 +7,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type HealthCheckController struct{}
