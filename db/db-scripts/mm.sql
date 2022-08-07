@@ -44,6 +44,19 @@ GRANT ALL PRIVILEGES ON TABLE sensor_events TO api_events;
 GRANT ALL ON SEQUENCE sensor_events_id_seq to api_events;
 GRANT SELECT ON TABLE sensor_events TO dashboard;
 
+CREATE TABLE IF NOT EXISTS gps_events(
+    id SERIAL PRIMARY KEY,
+    facilidad VARCHAR(50) NOT NULL,
+    latitude FLOAT,
+    longitude FLOAT,
+    altitude FLOAT,
+    gfh TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+GRANT ALL PRIVILEGES ON TABLE gps_events TO api_events;
+GRANT ALL ON SEQUENCE gps_events_id_seq TO api_events;
+GRANT SELECT ON TABLE gps_events TO dashboard;
+
 \connect "api_horus";
 CREATE TABLE IF NOT EXISTS device_tokens (
     id SERIAL PRIMARY KEY,
