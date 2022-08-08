@@ -169,7 +169,15 @@
             "properties": [
               {
                 "id": "decimals",
-                "value": 5
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              },
+              {
+                "id": "displayName",
+                "value": "Latitud"
               }
             ]
           },
@@ -181,7 +189,31 @@
             "properties": [
               {
                 "id": "decimals",
-                "value": 5
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              },
+              {
+                "id": "displayName",
+                "value": "Longitud"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "altitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "lengthm"
+              },
+              {
+                "id": "displayName",
+                "value": "Altura"
               }
             ]
           }
@@ -194,13 +226,14 @@
         "y": 1
       },
       "id": 25,
+      "maxDataPoints": null,
       "options": {
         "basemap": {
           "config": {},
           "type": "default"
         },
         "controls": {
-          "mouseWheelZoom": false,
+          "mouseWheelZoom": true,
           "showAttribution": true,
           "showDebug": true,
           "showScale": true,
@@ -224,7 +257,7 @@
             "location": {
               "latitude": "latitude",
               "longitude": "longitude",
-              "mode": "auto"
+              "mode": "coords"
             },
             "type": "markers"
           }
@@ -241,9 +274,9 @@
           "format": "table",
           "group": [],
           "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  gfh AS \"time\",\n  latitude,\n  longitude\nFROM gps_events\nORDER BY 1",
-          "refId": "A",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  gfh AS \"time\",\n  latitude,\n  longitude,\n  altitude\nFROM gps_events\nWHERE\n  $__timeFilter(gfh)\nORDER BY 1",
+          "refId": "query",
           "select": [
             [
               {
@@ -260,12 +293,26 @@
                 ],
                 "type": "column"
               }
+            ],
+            [
+              {
+                "params": [
+                  "altitude"
+                ],
+                "type": "column"
+              }
             ]
           ],
           "table": "gps_events",
           "timeColumn": "gfh",
           "timeColumnType": "timestamp",
-          "where": []
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "Localización",
@@ -294,7 +341,7 @@
           },
           "decimals": 2,
           "mappings": [],
-          "max": 100,
+          "max": 150,
           "min": 0,
           "thresholds": {
             "mode": "percentage",
@@ -333,7 +380,7 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": true,
+        "showThresholdLabels": false,
         "showThresholdMarkers": true,
         "text": {}
       },
@@ -1102,7 +1149,7 @@
       "type": "table"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 32,
   "style": "dark",
   "tags": [],
@@ -1117,5 +1164,5 @@
   "timezone": "",
   "title": "CCIC - Comunicaciones",
   "uid": "d00gX1PMk",
-  "version": 2
+  "version": 3
 }
