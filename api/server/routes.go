@@ -55,11 +55,13 @@ func NewRouter() *gin.Engine {
 			mensMilEvent := new(controllers.MensMilEventController)
 			sensorEvent := new(controllers.SensorEventController)
 			sensorGPSEvent := new(controllers.SensorGPSController)
+			temperatureEvent := new(controllers.TemperatureEventController)
 
 			eventsGroup.POST("mens-mil", mensMilEvent.Save)
 			eventsGroup.DELETE("mens-mil", mensMilEvent.ClearRegisters)
 			eventsGroup.POST("sensor_bool", sensorEvent.Save)
 			eventsGroup.POST("geolocalizacion", sensorGPSEvent.Save)
+			eventsGroup.POST("temperatura", temperatureEvent.Save)
 		}
 		tokenGroup := v1.Group("token")
 		{
