@@ -44,3 +44,12 @@ produccion debera nuevamente utilizar el comando:
 ```bash
 docker-compose down --rmi all
 ```
+### Credenciales - Grafana
+URL: https://localhost:3000
+Usuario: admin
+Contraseña: admin
+
+### Credenciales - InfluxDB
+URL: http://localhost:8086
+Usuario: jccic
+Contraseña: C4p1t4nM4c31r4
