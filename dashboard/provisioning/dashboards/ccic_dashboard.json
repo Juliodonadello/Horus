@@ -86,59 +86,6 @@
       "type": "text"
     },
     {
-      "datasource": null,
-      "gridPos": {
-        "h": 8,
-        "w": 2,
-        "x": 4,
-        "y": 1
-      },
-      "id": 18,
-      "options": {
-        "bgColor": "",
-        "clockType": "24 hour",
-        "countdownSettings": {
-          "endCountdownTime": "2021-02-26T14:51:22-03:00",
-          "endText": "00:00:00"
-        },
-        "countupSettings": {
-          "beginCountupTime": "2022-07-29T01:20:49-03:00",
-          "beginText": "00:00:00"
-        },
-        "dateSettings": {
-          "dateFormat": "YYYY-MM-DD",
-          "fontSize": "20px",
-          "fontWeight": "normal",
-          "locale": "",
-          "showDate": true
-        },
-        "mode": "time",
-        "refresh": "sec",
-        "timeSettings": {
-          "fontSize": "20px",
-          "fontWeight": "bold"
-        },
-        "timezone": "",
-        "timezoneSettings": {
-          "fontSize": "12px",
-          "fontWeight": "normal",
-          "showTimezone": false,
-          "zoneFormat": "offsetAbbv"
-        }
-      },
-      "pluginVersion": "2.1.0",
-      "targets": [
-        {
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Hora Actual",
-      "type": "grafana-clock-panel"
-    },
-    {
       "datasource": "events-db",
       "fieldConfig": {
         "defaults": {
@@ -1164,5 +1111,5 @@
   "timezone": "",
   "title": "CCIC - Comunicaciones",
   "uid": "d00gX1PMk",
-  "version": 3
+  "version": 1
 }
