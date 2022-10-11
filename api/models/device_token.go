@@ -12,17 +12,17 @@ import (
 )
 
 var (
-	tokenLengthEnv       = os.Getenv("TOKEN_LENGTH")
-	tokenDurationDaysEnv = os.Getenv("TOKEN_DURATION_DAYS")
-	tokenDurationDays, _ = strconv.Atoi(tokenDurationDaysEnv)
-	tokenLength, _       = strconv.Atoi(tokenLengthEnv)
-	TokenCache           = make(map[string]*DeviceToken, 20)
-	DeviceCache          = make(map[string]*DeviceToken, 20)
-	invalidDevice        = errors.New("DeviceToken Model: Invalid Device Name")
-	invalidToken         = errors.New("DeviceToken Model: Invalid Token")
-	invalidCreationTime  = errors.New("DeviceToken Model: Invalid created at")
-	invalidDurationDays  = errors.New("DeviceToken Model: Invalid duration days")
-	deviceExists         = errors.New("DeviceToken Model: Device exists")
+	tokenLengthEnv            = os.Getenv("TOKEN_LENGTH")
+	tokenDurationDaysEnv      = os.Getenv("TOKEN_DURATION_DAYS")
+	tokenDurationDays, _      = strconv.Atoi(tokenDurationDaysEnv)
+	tokenLength, _            = strconv.Atoi(tokenLengthEnv)
+	TokenCache                = make(map[string]*DeviceToken, 20)
+	DeviceCache               = make(map[string]*DeviceToken, 20)
+	ErrFooInvalidDevice       = errors.New("DeviceToken Model: Invalid Device Name")
+	ErrFooInvalidToken        = errors.New("DeviceToken Model: Invalid Token")
+	ErrFooInvalidCreationTime = errors.New("DeviceToken Model: Invalid created at")
+	ErrFooInvalidDurationDays = errors.New("DeviceToken Model: Invalid duration days")
+	ErrFooDeviceExists        = errors.New("DeviceToken Model: Device exists")
 )
 
 type DeviceToken struct {
@@ -99,20 +99,20 @@ func (e *DeviceToken) Delete() error {
 // Validate checks token fields correctness
 func (e DeviceToken) Validate() error {
 	if strings.TrimSpace(e.Device) == "" || len(e.Device) > 50 {
-		return invalidDevice
+		return ErrFooInvalidDevice
 	}
 	if strings.TrimSpace(e.Token) == "" {
-		return invalidToken
+		return ErrFooInvalidToken
 	}
 	today := time.Now()
 	if e.CreatedAt.After(today) {
-		return invalidCreationTime
+		return ErrFooInvalidCreationTime
 	}
 	if int(e.ExpiresAt.Sub(e.CreatedAt).Hours()/24) != tokenDurationDays {
-		return invalidDurationDays
+		return ErrFooInvalidDurationDays
 	}
 	if DeviceCache[e.Device] != nil {
-		return deviceExists
+		return ErrFooDeviceExists
 	}
 	return nil
 }

@@ -1,17 +1,12 @@
 package server
 
 import (
+	"api/controllers"
 	"api/middleware"
+	"net/http"
+
 	"github.com/gin-contrib/secure"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"os"
-)
-import "api/controllers"
-
-var (
-	grafanaHost = os.Getenv("GRAFANA_HOST")
-	grafanaPort = os.Getenv("GRAFANA_PORT")
 )
 
 func NewRouter() *gin.Engine {
@@ -59,9 +54,14 @@ func NewRouter() *gin.Engine {
 		{
 			mensMilEvent := new(controllers.MensMilEventController)
 			sensorEvent := new(controllers.SensorEventController)
+			sensorGPSEvent := new(controllers.SensorGPSController)
+			temperatureEvent := new(controllers.TemperatureEventController)
+
 			eventsGroup.POST("mens-mil", mensMilEvent.Save)
 			eventsGroup.DELETE("mens-mil", mensMilEvent.ClearRegisters)
 			eventsGroup.POST("sensor_bool", sensorEvent.Save)
+			eventsGroup.POST("geolocalizacion", sensorGPSEvent.Save)
+			eventsGroup.POST("temperatura", temperatureEvent.Save)
 		}
 		tokenGroup := v1.Group("token")
 		{

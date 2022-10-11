@@ -7,19 +7,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type SensorEventController struct{}
+type SensorGPSController struct{}
 
-func (e SensorEventController) Save(c *gin.Context) {
-	var SensorEventNuevo models.SensorEvent
-	if err := c.ShouldBindJSON(&SensorEventNuevo); err != nil {
+func (e SensorGPSController) Save(c *gin.Context) {
+	var SensorGPSNuevo models.SensorEvent_gps
+	if err := c.ShouldBindJSON(&SensorGPSNuevo); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := SensorEventNuevo.Validate(); err != nil {
+	if err := SensorGPSNuevo.Validate(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := SensorEventNuevo.Write()
+	err := SensorGPSNuevo.Write()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}

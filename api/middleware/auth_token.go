@@ -3,8 +3,9 @@ package middleware
 import (
 	"api/helpers"
 	"api/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func TokenDeviceAuth() gin.HandlerFunc {

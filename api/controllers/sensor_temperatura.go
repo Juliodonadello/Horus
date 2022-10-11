@@ -7,19 +7,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type SensorEventController struct{}
+type TemperatureEventController struct{}
 
-func (e SensorEventController) Save(c *gin.Context) {
-	var SensorEventNuevo models.SensorEvent
-	if err := c.ShouldBindJSON(&SensorEventNuevo); err != nil {
+func (e TemperatureEventController) Save(c *gin.Context) {
+	var TemperatureEventNuevo models.TemperatureEvent
+	if err := c.ShouldBindJSON(&TemperatureEventNuevo); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := SensorEventNuevo.Validate(); err != nil {
+	if err := TemperatureEventNuevo.Validate(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := SensorEventNuevo.Write()
+	err := TemperatureEventNuevo.Write()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}

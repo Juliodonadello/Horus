@@ -9,15 +9,15 @@ import (
 )
 
 var (
-	ValidClasifSeg                 = []string{"publico", "reservado", "confidencial", "secreto"}
-	ValidPrecedencia               = []string{"rutina", "prioridad", "inmediato", "flash"}
-	InvalidClasifSegMensMilEvent   = errors.New("MensMilEvent Model: Invalid Clasificacion de Seguridad")
-	InvalidPrecedenciaMensMilEvent = errors.New("MensMilEvent Model: Invalid Precedencia")
-	InvalidNroMMMensMilEvent       = errors.New("MensMilEvent Model: Invalid value for nro mm")
-	InvalidDestinoMensMilEvent     = errors.New("MensMilEvent Model: Invalid value for destino")
-	InvalidOrigenMensMilEvent      = errors.New("MensMilEvent Model: value for origen")
-	InvalidEventoMensMilEvent      = errors.New("MensMilEvent Model: Invalid value for evento")
-	InvalidTimeMensMilEvent        = errors.New("MensMilEvent Model: Invalid Time Value, out of +- 600 sec range")
+	ValidClasifSeg                       = []string{"publico", "reservado", "confidencial", "secreto"}
+	ValidPrecedencia                     = []string{"rutina", "prioridad", "inmediato", "flash"}
+	ErrFooInvalidClasifSegMensMilEvent   = errors.New("MensMilEvent Model: Invalid Clasificacion de Seguridad")
+	ErrFooInvalidPrecedenciaMensMilEvent = errors.New("MensMilEvent Model: Invalid Precedencia")
+	ErrFooInvalidNroMMMensMilEvent       = errors.New("MensMilEvent Model: Invalid value for nro mm")
+	ErrFooInvalidDestinoMensMilEvent     = errors.New("MensMilEvent Model: Invalid value for destino")
+	ErrFooInvalidOrigenMensMilEvent      = errors.New("MensMilEvent Model: value for origen")
+	ErrFooInvalidEventoMensMilEvent      = errors.New("MensMilEvent Model: Invalid value for evento")
+	ErrFooInvalidTimeMensMilEvent        = errors.New("MensMilEvent Model: Invalid Time Value, out of +- 600 sec range")
 )
 
 type MensMilEvent struct {
@@ -43,26 +43,26 @@ func (e MensMilEvent) Write() (*MensMilEvent, error) {
 
 func (e MensMilEvent) Validate() error {
 	if e.NroMM <= 0 {
-		return InvalidNroMMMensMilEvent
+		return ErrFooInvalidNroMMMensMilEvent
 	}
 	if !helpers.ValidString(e.ClasifSeg, ValidClasifSeg) {
-		return InvalidClasifSegMensMilEvent
+		return ErrFooInvalidClasifSegMensMilEvent
 	}
 	if !helpers.ValidString(e.Precedencia, ValidPrecedencia) {
-		return InvalidPrecedenciaMensMilEvent
+		return ErrFooInvalidPrecedenciaMensMilEvent
 	}
 	if strings.TrimSpace(e.Destino) == "" {
-		return InvalidDestinoMensMilEvent
+		return ErrFooInvalidDestinoMensMilEvent
 	}
 	if strings.TrimSpace(e.Origen) == "" {
-		return InvalidOrigenMensMilEvent
+		return ErrFooInvalidOrigenMensMilEvent
 	}
 	if strings.TrimSpace(e.Evento) == "" {
-		return InvalidEventoMensMilEvent
+		return ErrFooInvalidEventoMensMilEvent
 	}
 	diffTime := time.Now().Unix() - e.Time
 	if diffTime > 600 || diffTime < -600 {
-		return InvalidTimeMensMilEvent
+		return ErrFooInvalidTimeMensMilEvent
 	}
 	return nil
 }

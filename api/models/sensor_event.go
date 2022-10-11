@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	InvalidFacilitySensorEvent = errors.New("SensorEvent Model: Invalid Facility for Sensor Event")
-	InvalidEventoSensorEvent   = errors.New("SensorEvent Model: Invalid Event for Sensor Event")
+	ErrFooInvalidFacilitySensorEvent = errors.New("SensorEvent Model: Invalid Facility for Sensor Event")
+	ErrFooInvalidEventoSensorEvent   = errors.New("SensorEvent Model: Invalid Event for Sensor Event")
 )
 
 type SensorEvent struct {
@@ -35,10 +35,10 @@ func (e SensorEvent) Write() error {
 
 func (e SensorEvent) Validate() error {
 	if strings.TrimSpace(e.Facilidad) == "" {
-		return InvalidFacilitySensorEvent
+		return ErrFooInvalidFacilitySensorEvent
 	}
 	if strings.TrimSpace(e.Evento) == "" {
-		return InvalidEventoSensorEvent
+		return ErrFooInvalidEventoSensorEvent
 	}
 	return nil
 }

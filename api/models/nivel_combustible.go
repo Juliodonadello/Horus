@@ -4,16 +4,17 @@ import (
 	"api/metrics_db"
 	"context"
 	"errors"
-	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"strings"
 	"time"
+
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
 var (
-	InvalidGeneradorNivelCombustible = errors.New("NivelCombustible Model: Invalid Generator Name")
-	InvalidNivelNivelCombustible     = errors.New("NivelCombustible Model: Invalid Gas level value")
-	InvalidTimeNivelCombustible      = errors.New("NivelCombustible Model: Invalid Time Value, out of +- 600 sec range")
-	InvalidCapacidadNivelCombustible = errors.New("NivelCombustible Model: Invalid Capacidad")
+	ErrFooInvalidGeneradorNivelCombustible = errors.New("NivelCombustible Model: Invalid Generator Name")
+	ErrFooInvalidNivelNivelCombustible     = errors.New("NivelCombustible Model: Invalid Gas level value")
+	ErrFooInvalidTimeNivelCombustible      = errors.New("NivelCombustible Model: Invalid Time Value, out of +- 600 sec range")
+	ErrFooInvalidCapacidadNivelCombustible = errors.New("NivelCombustible Model: Invalid Capacidad")
 )
 
 type NivelCombustible struct {
@@ -41,17 +42,17 @@ func (e NivelCombustible) Write() (*NivelCombustible, error) {
 
 func (e NivelCombustible) Validate() error {
 	if strings.TrimSpace(e.Generador) == "" {
-		return InvalidGeneradorNivelCombustible
+		return ErrFooInvalidGeneradorNivelCombustible
 	}
 	if e.Capacidad < 0.0 || e.Capacidad < e.Nivel {
-		return InvalidCapacidadNivelCombustible
+		return ErrFooInvalidCapacidadNivelCombustible
 	}
 	if e.Nivel < 0.0 {
-		return InvalidNivelNivelCombustible
+		return ErrFooInvalidNivelNivelCombustible
 	}
 	diffTime := time.Now().Unix() - e.Time
 	if diffTime > 600 || diffTime < -600 {
-		return InvalidTimeNivelCombustible
+		return ErrFooInvalidTimeNivelCombustible
 	}
 	return nil
 }

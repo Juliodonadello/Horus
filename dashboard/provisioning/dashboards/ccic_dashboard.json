@@ -8,112 +8,23 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
   "links": [],
+  "liveNow": false,
   "panels": [
-    {
-      "datasource": "events-db",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "displayMode": "auto",
-            "filterable": true
-          },
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "",
-              "to": "",
-              "type": 1
-            }
-          ],
-          "max": 7,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 16,
-        "x": 3,
-        "y": 0
-      },
-      "id": 24,
-      "options": {
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "GFH"
-          }
-        ]
-      },
-      "pluginVersion": "7.4.0",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select \n\tfacilidad as \"Facilidad\",\n\tevento as \"Tipo_de_evento\", \n\tvalor as \"Valor\",\n\tage(max(gfh),min(gfh)) as \"Tiempo\"\nfrom public.sensor_events\nwhere evento = \"rain\"",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "nro_mm"
-                ],
-                "type": "column"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "nro_mm"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "mm_events",
-          "timeColumn": "gfh",
-          "timeColumnType": "timestamptz",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Procesamiento de MM",
-      "transformations": [],
-      "type": "table"
-    },
     {
       "collapsed": false,
       "datasource": null,
@@ -121,7 +32,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 0
       },
       "id": 22,
       "panels": [],
@@ -131,24 +42,18 @@
     {
       "datasource": "events-db",
       "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "gridPos": {
         "h": 8,
-        "w": 7,
+        "w": 6,
         "x": 0,
-        "y": 10
+        "y": 1
       },
       "id": 20,
       "options": {
-        "content": "## CCIC\n---\n![DGCI](https://cominfo.ejercito.mil.ar/Imagenes/EscudoHeraldica.jpg) \n         ",
+        "content": "## CCIC\n---\n<center>\n  <img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Escudo_del_Ej%C3%A9rcito_Argentino.png\" alt=\"drawing\" width=\"200\"/>\n</center>",
         "mode": "markdown"
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "targets": [
         {
           "format": "time_series",
@@ -177,68 +82,188 @@
           ]
         }
       ],
-      "title": "",
       "transparent": true,
       "type": "text"
     },
     {
-      "datasource": null,
+      "datasource": "events-db",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "latitude"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              },
+              {
+                "id": "displayName",
+                "value": "Latitud"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "longitude"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              },
+              {
+                "id": "displayName",
+                "value": "Longitud"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "altitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "lengthm"
+              },
+              {
+                "id": "displayName",
+                "value": "Altura"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 8,
-        "y": 10
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 1
       },
-      "id": 18,
+      "id": 25,
+      "maxDataPoints": null,
       "options": {
-        "bgColor": "",
-        "clockType": "24 hour",
-        "countdownSettings": {
-          "endCountdownTime": "2021-02-26T14:51:22-03:00",
-          "endText": "00:00:00"
+        "basemap": {
+          "config": {},
+          "type": "default"
         },
-        "countupSettings": {
-          "beginCountupTime": "2022-07-29T01:20:49-03:00",
-          "beginText": "00:00:00"
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": true,
+          "showScale": true,
+          "showZoom": true
         },
-        "dateSettings": {
-          "dateFormat": "YYYY-MM-DD",
-          "fontSize": "20px",
-          "fontWeight": "normal",
-          "locale": "",
-          "showDate": true
-        },
-        "mode": "time",
-        "refresh": "sec",
-        "timeSettings": {
-          "fontSize": "20px",
-          "fontWeight": "bold"
-        },
-        "timezone": "",
-        "timezoneSettings": {
-          "fontSize": "12px",
-          "fontWeight": "normal",
-          "showTimezone": false,
-          "zoneFormat": "offsetAbbv"
+        "layers": [
+          {
+            "config": {
+              "color": {
+                "fixed": "dark-green"
+              },
+              "fillOpacity": 0.4,
+              "shape": "circle",
+              "showLegend": true,
+              "size": {
+                "fixed": 5,
+                "max": 15,
+                "min": 2
+              }
+            },
+            "location": {
+              "latitude": "latitude",
+              "longitude": "longitude",
+              "mode": "coords"
+            },
+            "type": "markers"
+          }
+        ],
+        "view": {
+          "id": "coords",
+          "lat": -35.205682,
+          "lon": -61.120335,
+          "zoom": 4.92
         }
       },
-      "pluginVersion": "1.3.1",
       "targets": [
         {
-          "queryType": "randomWalk",
-          "refId": "A"
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  gfh AS \"time\",\n  latitude,\n  longitude,\n  altitude\nFROM gps_events\nWHERE\n  $__timeFilter(gfh)\nORDER BY 1",
+          "refId": "query",
+          "select": [
+            [
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "longitude"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "altitude"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gps_events",
+          "timeColumn": "gfh",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Hora Actual",
-      "type": "grafana-clock-panel"
+      "title": "Localización",
+      "type": "geomap"
     },
     {
       "collapsed": false,
@@ -247,7 +272,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 9
       },
       "id": 8,
       "panels": [],
@@ -261,17 +286,8 @@
           "color": {
             "mode": "thresholds"
           },
-          "custom": {},
           "decimals": 2,
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "",
-              "to": "",
-              "type": 1
-            }
-          ],
+          "mappings": [],
           "max": 12,
           "min": 0,
           "thresholds": {
@@ -299,10 +315,11 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 19
+        "y": 10
       },
       "id": 12,
       "options": {
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "sum"
@@ -310,11 +327,11 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": true,
+        "showThresholdLabels": false,
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "targets": [
         {
           "groupBy": [
@@ -363,14 +380,16 @@
           "color": {
             "mode": "thresholds"
           },
-          "custom": {},
           "mappings": [
             {
-              "from": "225",
-              "id": 1,
-              "text": "OK!",
-              "to": "215",
-              "type": 2
+              "options": {
+                "from": 225,
+                "result": {
+                  "text": "OK!"
+                },
+                "to": 215
+              },
+              "type": "range"
             }
           ],
           "noValue": "Verificar!",
@@ -415,7 +434,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 19
+        "y": 10
       },
       "id": 14,
       "options": {
@@ -433,7 +452,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "targets": [
         {
           "groupBy": [
@@ -484,14 +503,16 @@
           "color": {
             "mode": "thresholds"
           },
-          "custom": {},
           "mappings": [
             {
-              "from": "225",
-              "id": 1,
-              "text": "OK!",
-              "to": "215",
-              "type": 2
+              "options": {
+                "from": 225,
+                "result": {
+                  "text": "OK!"
+                },
+                "to": 215
+              },
+              "type": "range"
             }
           ],
           "noValue": "Verificar!",
@@ -503,28 +524,16 @@
                 "value": null
               },
               {
-                "color": "red",
+                "color": "green",
                 "value": 0
               },
               {
                 "color": "yellow",
-                "value": 200
-              },
-              {
-                "color": "green",
-                "value": 215
-              },
-              {
-                "color": "green",
-                "value": 220
-              },
-              {
-                "color": "yellow",
-                "value": 225
+                "value": 8
               },
               {
                 "color": "red",
-                "value": 235
+                "value": 12
               }
             ]
           },
@@ -536,7 +545,7 @@
         "h": 10,
         "w": 6,
         "x": 12,
-        "y": 19
+        "y": 10
       },
       "id": 23,
       "options": {
@@ -554,7 +563,7 @@
         "text": {},
         "textMode": "value_and_name"
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "targets": [
         {
           "groupBy": [
@@ -573,7 +582,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "data = from(bucket: \"alimentacion-electrica\")\r\n  |> range(start: -5m, stop: now())\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"alimentacion\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"corriente\")\r\n  |> aggregateWindow(every: 1m, fn: median, createEmpty: false)\r\n  |> unique(column: \"generador\")\r\n\r\nrenamedData = data\r\n  |> map(fn: (r) => ({_field:\"corriente\" , generador:r.generador, _value:r._value, _measurement:r._measurement, _time:r._time}))\r\n\r\n\r\nrenamedData |> yield()",
+          "query": "data = from(bucket: \"alimentacion-electrica\")\r\n  |> range(start: -5m, stop: now())\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"alimentacion\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"corriente\")\r\n  |> aggregateWindow(every: 1m, fn: median, createEmpty: false)\r\n  |> unique(column: \"generador\")\r\n\r\nrenamedData = data\r\n  |> map(fn: (r) => ({_field:\"Corriente\" , generador:r.generador, _value:r._value, _measurement:r._measurement, _time:r._time}))\r\n\r\n\r\nrenamedData |> yield()",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -595,7 +604,92 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Tensión Generadores",
+      "title": "Corriente Generadores",
+      "type": "stat"
+    },
+    {
+      "datasource": "events-db",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "red",
+                "value": 40
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 18,
+        "y": 10
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.6",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  gfh AS \"time\",\n  temperature\nFROM temperature_events\nWHERE\n  $__timeFilter(gfh)\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "temperature"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "temperature_events",
+          "timeColumn": "gfh",
+          "timeColumnType": "timestamptz",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Temperatura",
       "type": "stat"
     },
     {
@@ -605,7 +699,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 20
       },
       "id": 6,
       "panels": [],
@@ -619,19 +713,13 @@
       "dashes": false,
       "datasource": "metrics-db",
       "description": "Cantidad de mensajes en espera en la bandeja de entrada del Centro de Mensajes Digital",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 30
+        "y": 21
       },
       "hiddenSeries": false,
       "id": 2,
@@ -657,7 +745,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -758,7 +846,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -780,7 +867,7 @@
         "h": 8,
         "w": 7,
         "x": 17,
-        "y": 30
+        "y": 21
       },
       "id": 16,
       "options": {
@@ -796,7 +883,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "targets": [
         {
           "groupBy": [
@@ -864,7 +951,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 38
+        "y": 29
       },
       "id": 4,
       "options": {
@@ -877,7 +964,7 @@
           }
         ]
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "targets": [
         {
           "groupBy": [
@@ -931,15 +1018,7 @@
             "displayMode": "auto",
             "filterable": true
           },
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "",
-              "to": "",
-              "type": 1
-            }
-          ],
+          "mappings": [],
           "max": 7,
           "thresholds": {
             "mode": "absolute",
@@ -961,7 +1040,7 @@
         "h": 9,
         "w": 16,
         "x": 8,
-        "y": 38
+        "y": 29
       },
       "id": 10,
       "options": {
@@ -973,7 +1052,7 @@
           }
         ]
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.2.6",
       "targets": [
         {
           "format": "table",
@@ -1017,20 +1096,20 @@
       "type": "table"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 27,
+  "refresh": "5s",
+  "schemaVersion": 32,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "2022-07-28T22:13:58.104Z",
-    "to": "2022-07-28T22:23:58.106Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "CCIC - Comunicaciones",
   "uid": "d00gX1PMk",
-  "version": 1
+  "version": 3
 }

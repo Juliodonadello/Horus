@@ -4,16 +4,17 @@ import (
 	"api/metrics_db"
 	"context"
 	"errors"
-	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"strings"
 	"time"
+
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
 var (
-	EstadosValid    = []string{"en servicio", "servicio limitado", "fuera de servicio"}
-	InvalidFacility = errors.New("EstadoServicio Model: Invalid Facility Name")
-	InvalidState    = errors.New("EstadoServicio Model: Invalid State Name")
-	InvalidTime     = errors.New("EstadoServicio Model: Invalid Time Value, out of +- 600 sec range")
+	EstadosValid          = []string{"en servicio", "servicio limitado", "fuera de servicio"}
+	ErrFooInvalidFacility = errors.New("EstadoServicio Model: Invalid Facility Name")
+	ErrFooInvalidState    = errors.New("EstadoServicio Model: Invalid State Name")
+	ErrFooInvalidTime     = errors.New("EstadoServicio Model: Invalid Time Value, out of +- 600 sec range")
 )
 
 type EstadoServicio struct {
@@ -38,7 +39,7 @@ func (e EstadoServicio) Write() (*EstadoServicio, error) {
 
 func (e EstadoServicio) Validate() error {
 	if strings.TrimSpace(e.Facilidad) == "" {
-		return InvalidFacility
+		return ErrFooInvalidFacility
 	}
 	var estado string
 	for i := 0; i < len(EstadosValid); i++ {
@@ -48,11 +49,11 @@ func (e EstadoServicio) Validate() error {
 		}
 	}
 	if len(estado) == 0 {
-		return InvalidState
+		return ErrFooInvalidState
 	}
 	diffTime := time.Now().Unix() - e.Time
 	if diffTime > 600 || diffTime < -600 {
-		return InvalidTime
+		return ErrFooInvalidTime
 	}
 	return nil
 }
