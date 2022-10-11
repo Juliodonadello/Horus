@@ -44,13 +44,13 @@
       "description": "",
       "gridPos": {
         "h": 8,
-        "w": 3,
+        "w": 6,
         "x": 0,
         "y": 1
       },
       "id": 20,
       "options": {
-        "content": "## CCIC\n---\n<img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Escudo_del_Ej%C3%A9rcito_Argentino.png\" alt=\"drawing\" width=\"200\"/>",
+        "content": "## CCIC\n---\n<center>\n  <img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Escudo_del_Ej%C3%A9rcito_Argentino.png\" alt=\"drawing\" width=\"200\"/>\n</center>",
         "mode": "markdown"
       },
       "pluginVersion": "8.2.6",
@@ -288,7 +288,7 @@
           },
           "decimals": 2,
           "mappings": [],
-          "max": 150,
+          "max": 12,
           "min": 0,
           "thresholds": {
             "mode": "percentage",
@@ -1111,5 +1111,5 @@
   "timezone": "",
   "title": "CCIC - Comunicaciones",
   "uid": "d00gX1PMk",
-  "version": 1
+  "version": 3
 }
