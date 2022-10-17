@@ -43,8 +43,8 @@
       "datasource": "events-db",
       "description": "",
       "gridPos": {
-        "h": 8,
-        "w": 6,
+        "h": 14,
+        "w": 7,
         "x": 0,
         "y": 1
       },
@@ -167,9 +167,9 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 6,
+        "h": 14,
+        "w": 6,
+        "x": 7,
         "y": 1
       },
       "id": 25,
@@ -181,8 +181,8 @@
         },
         "controls": {
           "mouseWheelZoom": true,
-          "showAttribution": true,
-          "showDebug": true,
+          "showAttribution": false,
+          "showDebug": false,
           "showScale": true,
           "showZoom": true
         },
@@ -213,7 +213,7 @@
           "id": "coords",
           "lat": -35.205682,
           "lon": -61.120335,
-          "zoom": 4.92
+          "zoom": 4
         }
       },
       "targets": [
@@ -272,7 +272,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 15
       },
       "id": 8,
       "panels": [],
@@ -290,6 +290,7 @@
           "mappings": [],
           "max": 12,
           "min": 0,
+          "noValue": "Verificar!",
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -315,7 +316,7 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 10
+        "y": 16
       },
       "id": 12,
       "options": {
@@ -434,7 +435,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 10
+        "y": 16
       },
       "id": 14,
       "options": {
@@ -545,7 +546,7 @@
         "h": 10,
         "w": 6,
         "x": 12,
-        "y": 10
+        "y": 16
       },
       "id": 23,
       "options": {
@@ -615,6 +616,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
+          "noValue": "Verificar!",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -640,7 +642,7 @@
         "h": 10,
         "w": 6,
         "x": 18,
-        "y": 10
+        "y": 16
       },
       "id": 27,
       "options": {
@@ -699,231 +701,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 26
       },
       "id": 6,
       "panels": [],
       "title": "Comunicaciones",
       "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "metrics-db",
-      "description": "Cantidad de mensajes en espera en la bandeja de entrada del Centro de Mensajes Digital",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 17,
-        "x": 0,
-        "y": 21
-      },
-      "hiddenSeries": false,
-      "id": 2,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "sort": "current",
-        "sortDesc": false,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": false
-      },
-      "percentage": false,
-      "pluginVersion": "8.2.6",
-      "pointradius": 2,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:1080"
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "FinalOutput = [\"_value\", \"_time\", \"_field\", \"facilidad\"]\r\n\r\ndata = from(bucket: \"colas-espera\")\r\n  |> range(start: -1h, stop: now())\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"facilidad\"] == \"Centro de Mensajes\")\r\n  |> aggregateWindow(every: 1m, fn: last, createEmpty: false)\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:\"Longitud Cola MM\", facilidad:r.facilidad}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Cola CMD",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:47",
-          "decimals": 0,
-          "format": "MM",
-          "label": "Mensajes",
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "$$hashKey": "object:48",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "datasource": "metrics-db",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 7,
-        "x": 17,
-        "y": 21
-      },
-      "id": 16,
-      "options": {
-        "displayMode": "basic",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "text": {}
-      },
-      "pluginVersion": "8.2.6",
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "FinalOutput = [\"_value\", \"_time\", \"_field\", \"facilidad\"]\r\n\r\ndata = from(bucket: \"colas-espera\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"long_cola\")\r\n  |> filter(fn: (r) => r[\"facilidad\"] == \"Red Cdo\" or r[\"facilidad\"] == \"Red Cdo Op\" or r[\"facilidad\"] == \"Red Icia\" or r[\"facilidad\"] == \"Red Mat Pers\" or r[\"facilidad\"] == \"Red Op\")\r\n\r\nrenamedData = data\r\n    |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:\"Longitud Cola MM\", facilidad:r.facilidad}))\r\n    |> keep(columns:FinalOutput)\r\n\r\nrenamedData |> yield()",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Cola de MM de Facilidades",
-      "type": "bargauge"
     },
     {
       "datasource": "metrics-db",
@@ -951,7 +734,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 29
+        "y": 27
       },
       "id": 4,
       "options": {
@@ -1040,7 +823,7 @@
         "h": 9,
         "w": 16,
         "x": 8,
-        "y": 29
+        "y": 27
       },
       "id": 10,
       "options": {
@@ -1059,7 +842,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n\tnro_mm as \"Nro MM\", \n\tclasif_seg as \"Clasificacion\", \n\tprecedencia as \"Precedencia\",\n\tarray_to_string(array(select distinct unnest(array_agg(origen) || array_agg(destino))), ' - ') as \"Facilidades\" ,\n\tage(max(gfh),min(gfh)) as \"Tiempo Diligenciamiento\"\nfrom public.mm_events \ngroup by nro_mm, clasif_seg, precedencia\norder by nro_mm;",
+          "rawSql": "select \n\tnro_mm as \"Nro MM\",\n  mensaje as \"Mensaje\",\n\tclasif_seg as \"Clasificacion\", \n\tprecedencia as \"Precedencia\",\n\tarray_to_string(array(select distinct unnest(array_agg(origen) || array_agg(destino))), ' - ') as \"Facilidades\"\nfrom public.mm_events \ngroup by nro_mm, mensaje, clasif_seg, precedencia\norder by nro_mm;",
           "refId": "A",
           "select": [
             [
@@ -1111,5 +894,5 @@
   "timezone": "",
   "title": "CCIC - Comunicaciones",
   "uid": "d00gX1PMk",
-  "version": 3
+  "version": 1
 }
