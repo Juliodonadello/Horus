@@ -17,6 +17,7 @@ var (
 	ErrFooInvalidDestinoMensMilEvent     = errors.New("MensMilEvent Model: Invalid value for destino")
 	ErrFooInvalidOrigenMensMilEvent      = errors.New("MensMilEvent Model: value for origen")
 	ErrFooInvalidEventoMensMilEvent      = errors.New("MensMilEvent Model: Invalid value for evento")
+	ErrFooInvalidMensajeMensMilEvent     = errors.New("MensMilEvent Model: Invalid value for mensaje")
 	ErrFooInvalidTimeMensMilEvent        = errors.New("MensMilEvent Model: Invalid Time Value, out of +- 600 sec range")
 )
 
@@ -28,13 +29,14 @@ type MensMilEvent struct {
 	Destino     string `json:"destino" binding:"required"`
 	Origen      string `json:"origen" binding:"required"`
 	Evento      string `json:"evento" binding:"required"`
+	Mensaje     string `json:"mensaje" binding:"required"`
 	Time        int64  `json:"timestamp"`
 }
 
 func (e MensMilEvent) Write() (*MensMilEvent, error) {
 	client := event_db.GetEventDB()
-	stmt := `INSERT INTO mm_events (nro_mm, clasif_seg, precedencia, cifrado, destino, origen, evento, gfh) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
-	_, err := (*client).Exec(stmt, e.NroMM, e.ClasifSeg, e.Precedencia, e.Cifrado, e.Destino, e.Origen, e.Evento, time.Unix(e.Time, 0))
+	stmt := `INSERT INTO mm_events (nro_mm, clasif_seg, precedencia, cifrado, destino, origen, evento, mensaje, gfh) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	_, err := (*client).Exec(stmt, e.NroMM, e.ClasifSeg, e.Precedencia, e.Cifrado, e.Destino, e.Origen, e.Evento, e.Mensaje, time.Unix(e.Time, 0))
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +61,9 @@ func (e MensMilEvent) Validate() error {
 	}
 	if strings.TrimSpace(e.Evento) == "" {
 		return ErrFooInvalidEventoMensMilEvent
+	}
+	if strings.TrimSpace(e.Mensaje) == "" {
+		return ErrFooInvalidMensajeMensMilEvent
 	}
 	diffTime := time.Now().Unix() - e.Time
 	if diffTime > 600 || diffTime < -600 {
