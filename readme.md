@@ -1,8 +1,6 @@
 # Facultad de Ingeniería del Ejército
 ## Proyecto de Promoción y Síntesis
 
-* Integrante: CT Carlos A. MACEIRA GARCIA CONI
-
 ## Horus: Tablero de Control del JCCIC
 Sistema de monitorización de indicadores clave de performance de los Centros de Comunicaciones e Informáticad de Campaña del Ejército Argentino.
 
