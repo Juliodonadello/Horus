@@ -3,7 +3,7 @@
 
 Integrante: CT Carlos A. MACEIRA GARCIA CONI\
 Integrante: Julio A. DONADELLO\
-Integrante: Franco M. ABOSSO\
+Integrante: Franco M. ABOSSO
 
 ## Horus: Tablero de Control del JCCIC
 Sistema de monitorización de indicadores clave de performance de los Centros de Comunicaciones e Informáticad de Campaña del Ejército Argentino.
