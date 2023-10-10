@@ -1,6 +1,6 @@
 # Facultad de Ingeniería del Ejército
 ## Proyecto de Promoción y Síntesis
-![Informe del Proyecto](https://docs.google.com/document/d/1MaoOK6KTKQ8ccTGo6c2_zo3J4OdAxKjiHduJ54c-tMk/edit?usp=sharing)
+[Informe del Proyecto](https://docs.google.com/document/d/1MaoOK6KTKQ8ccTGo6c2_zo3J4OdAxKjiHduJ54c-tMk/edit?usp=sharing)
 
 ## Horus: Tablero de Control del JCCIC
 Sistema de monitorización de indicadores clave de performance de los Centros de Comunicaciones e Informáticad de Campaña del Ejército Argentino.
